@@ -9,5 +9,6 @@ public interface Network{
     public boolean isFollowing(Node follower, Node followed);
     public boolean areFriends(Node user1, Node user2);
     public ArrayList<Node> getRecommendedFriends(Node user);
-    public ArrayList<Users> getMutuals(Node user1, Node user2);
+    public ArrayList<String> getMutuals(Node user1, Node user2);
+    public int calculateScale(Node user1, Node user2);
 }
