@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 
 public class Node {
-    private String name;
+    private Users user;
     private ArrayList<Follow> follow;
     private ArrayList<Node> followers;
     private ArrayList<Node> following;
     
     public String getName() {
-        return this.name;
+        return user.getName();
     }
 
     public ArrayList<Follow> getFollows() {
@@ -23,7 +23,7 @@ public class Node {
     }
 
     public String toString() {
-        return this.name;
+        return  user.toString();
     }
 
     public void printFollowing() {
@@ -38,8 +38,8 @@ public class Node {
         }
     }
     
-    public Node(String name) {
-        this.name = name;
+    public Node(Users user) {
+        this.user = user;
         this.follow = new ArrayList<Follow>();
         this.followers = new ArrayList<Node>();
         this.following = new ArrayList<Node>();

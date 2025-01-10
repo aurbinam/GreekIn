@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Graph implements Network{
     private ArrayList<Node> users;
@@ -7,10 +8,10 @@ public class Graph implements Network{
         this.users = new ArrayList<Node>();
     }
 
-    public Node addUser(String name){
-        Node user = new Node(name);
-        this.users.add(user);
-        return user;
+    public Node addUser(Users user){
+        Node node = new Node(user);
+        this.users.add(node);
+        return node;
     }
 
     public void addFollow(Node follower, Node followed) throws UserNotInNetworkException{
@@ -95,30 +96,36 @@ public class Graph implements Network{
         return removeDuplicates(recommendedFriends);
     }
 
+
     public static void main(String[] args) {
         Network greekIn = new Graph();
-        Node John = greekIn.addUser("John");
-        Node Jane = greekIn.addUser("Jane");
-        Node Jack = greekIn.addUser("Jack");
-        Node Jill = greekIn.addUser("Jill");
-        Node Brock = greekIn.addUser("Brock");
-        Node Jodhn = new Node("Jodhn");
+        Users John = new Users("John", 25, true, "consultant", "Bayern", new ArrayList<String>());
+        Users Jane = new Users("Jane", 28, true, "engineer", "Berlin", new ArrayList<String>());
+        Users Jack = new Users("Jack", 30, true, "doctor", "Munich", new ArrayList<String>());
+        Users Jill = new Users("Jill", 22, true, "student", "Hamburg", new ArrayList<String>());
+        Users Brock = new Users("Brock", 27, true, "teacher", "Cologne", new ArrayList<String>());
+
+        Node nodeJohn = greekIn.addUser(John);
+        Node nodeJane = greekIn.addUser(Jane);
+        Node nodeJack = greekIn.addUser(Jack);
+        Node nodeJill = greekIn.addUser(Jill);
+        Node nodeBrock = greekIn.addUser(Brock);
 
         try{
-            greekIn.addFollow(John, Jane);
-            greekIn.addFollow(John, Jack);
-            greekIn.addFollow(Jane, Jack);
-            greekIn.addFollow(Jack, Jill);
-            greekIn.addFollow(Jane, John);
-            greekIn.addFollow(Jill, Brock);
-            greekIn.addFollow(Jack, John);
-            greekIn.addFollow(John, Brock);
+            greekIn.addFollow(nodeJohn, nodeJane);
+            greekIn.addFollow(nodeJohn, nodeJack);
+            greekIn.addFollow(nodeJane, nodeJack);
+            greekIn.addFollow(nodeJack, nodeJill);
+            greekIn.addFollow(nodeJane, nodeJohn);
+            greekIn.addFollow(nodeJill, nodeBrock);
+            greekIn.addFollow(nodeJack, nodeJohn);
+            greekIn.addFollow(nodeJohn, nodeBrock);
         } catch(UserNotInNetworkException e){
             System.out.println(e.getMessage());
         }
         
 
-        greekIn.removeFollow(Jack, Jill);
+        greekIn.removeFollow(nodeJack, nodeJill);
 
         // greekIn.printUserFollowing(Jack);
         // if(greekIn.areFriends(Jack, Jane)){
@@ -130,21 +137,21 @@ public class Graph implements Network{
         
         try{
             System.out.println("John is followed by");
-            greekIn.printUserFollowers(John);
+            greekIn.printUserFollowers(nodeJohn);
             System.out.println("John follows");
-            greekIn.printUserFollowing(John);
+            greekIn.printUserFollowing(nodeJohn);
 
             System.out.println("Jane Follows");
-            greekIn.printUserFollowing(Jane);
+            greekIn.printUserFollowing(nodeJane);
         } catch(UserNotInNetworkException e){
             System.out.println(e.getMessage());
         }
 
 
         System.out.println("Janes recommended freiends are");
-        ArrayList<Node> recommendedFriends = greekIn.getRecommendedFriends(Jane);
+        ArrayList<Node> recommendedFriends = greekIn.getRecommendedFriends(nodeJane);
         for(Node user : recommendedFriends){
-            System.out.println(user);
+            System.out.println(user.getName());
         }
     }
 }

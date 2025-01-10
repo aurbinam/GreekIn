@@ -5,8 +5,8 @@ import java.util.Map;
 public class Users extends Person{
     private Map<Integer, Person> userMap;
     
-    public Users(String name, int age, boolean gender, String occupation, String placeOfStudy, List<String> hobbies, List<String> followers, List<String> following) {
-        super(name, age, gender, occupation, placeOfStudy, hobbies, followers, following);
+    public Users(String name, int age, boolean gender, String occupation, String placeOfStudy, List<String> hobbies) {
+        super(name, age, gender, occupation, placeOfStudy, hobbies);
         this.userMap = new HashMap<>();       
     }
 

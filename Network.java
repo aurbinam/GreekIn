@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public interface Network{
-    public Node addUser(String name);
+    public Node addUser(Users user);
     public void addFollow(Node follower, Node followed) throws UserNotInNetworkException;
     public void removeFollow(Node follower, Node followed);
     public Node getUser(String name);

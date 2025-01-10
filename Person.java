@@ -1,5 +1,5 @@
 import java.util.List;
-import java.util.*;
+
 public class Person {
     private String name;
     private int age;
@@ -7,18 +7,14 @@ public class Person {
     private String occupation;
     private String placeOfStudy;
     private List<String> hobbies;
-    private Set<String> followers;
-    private Set<String> following;
 
-    public Person(String name, int age, boolean gender, String occupation, String placeOfStudy, List<String> hobbies, List<String> followers, List<String> following) {
+    public Person(String name, int age, boolean gender, String occupation, String placeOfStudy, List<String> hobbies) {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.occupation = occupation;
         this.placeOfStudy = placeOfStudy;
         this.hobbies = hobbies;
-        this.followers = new HashSet<>(followers); 
-        this.following = new HashSet<>(following);
     }
 
     //getters and setters
@@ -64,23 +60,8 @@ public class Person {
         this.hobbies = hobbies;
     }
 
-    public Set<String> getFollowers() {
-        return followers;
-    }
-    public void setFollowers(Set<String> followers) {
-        this.followers = followers;
-    }
-
-    public Set<String> getFollowing() {    
-        return following;
-    }
-    public void setFollowing(Set<String> following) {
-        this.following = following;
-    }
-
     public String toString() {
         return "Person{name='" + name + "', age=" + age + ", gender='" + gender + "', occupation='" + occupation +
-               "', placeOfStudy='" + placeOfStudy + "', hobbies=" + hobbies + ", followers=" + followers +
-               ", following=" + following + "}";
+               "', placeOfStudy='" + placeOfStudy + "', hobbies=" + hobbies;
     }
 }
