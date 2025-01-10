@@ -19,7 +19,6 @@ public class Graph implements Network{
             throw new UserNotInNetworkException("User is not in the network");
         }
         follower.addFollowing(followed);
-        followed.addFollowers(follower);
     }
 
     public void removeFollow(Node follower, Node followed){
@@ -120,8 +119,8 @@ public class Graph implements Network{
                 }
             }
         }
+        System.out.println(mutuals);
         return mutuals;
-        
     }
 
     public int compareMutuals(Node user1, Node user2){
@@ -131,7 +130,6 @@ public class Graph implements Network{
             percent += 5;
         }
         return percent;
-
     }
 
     public int calculateScale(Node user1, Node user2){
@@ -158,24 +156,12 @@ public class Graph implements Network{
         Node nodeBrock = greekIn.addUser(Brock);
 
         try{
-            greekIn.addFollow(nodeJohn, nodeJane);
-            greekIn.addFollow(nodeJohn, nodeJack);
-            greekIn.addFollow(nodeJane, nodeJack);
             greekIn.addFollow(nodeJack, nodeJill);
-            greekIn.addFollow(nodeJane, nodeJohn);
-            greekIn.addFollow(nodeJill, nodeBrock);
-            greekIn.addFollow(nodeJack, nodeJohn);
-            greekIn.addFollow(nodeJohn, nodeBrock);
-            greekIn.addFollow(nodeJack, nodeBrock);
-            greekIn.addFollow(nodeJill, nodeBrock);
-            greekIn.addFollow(nodeJane, nodeJill);
         } catch(UserNotInNetworkException e){
             System.out.println(e.getMessage());
         }
-        
 
-        greekIn.removeFollow(nodeJack, nodeJill);
-
+        nodeJack.printFollowing();  
         // greekIn.printUserFollowing(Jack);
         // if(greekIn.areFriends(Jack, Jane)){
         //     System.out.println("John and Jane are friends");
@@ -202,6 +188,9 @@ public class Graph implements Network{
         // for(Node user : recommendedFriends){
         //     System.out.println(user.getName());
         // }
+        nodeBrock.printFollowers();
+        System.out.println("sdaf");
+        nodeJill.printFollowing();
 
         int scale = greekIn.calculateScale(nodeJane, nodeBrock);
         System.out.println("Janes recommendation scale with Brock is " + scale);

@@ -56,6 +56,7 @@ public class Person {
     public List<String> getHobbies() {
         return hobbies;
     }
+    
     public void setHobbies(List<String> hobbies) {
         this.hobbies = hobbies;
     }

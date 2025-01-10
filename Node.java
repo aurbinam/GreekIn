@@ -50,12 +50,13 @@ public class Node {
     }
 
     public void addFollowing(Node followedUser) {
-        this.follow.add(new Follow(this, followedUser));
-        this.following.add(followedUser);
-    }
-
-    public void addFollowers(Node follower) {
-        this.followers.add(follower);
+        if(!following.contains(followedUser)){
+            Follow f = new Follow(this, followedUser);
+            this.follow.add(f);
+            this.following.add(followedUser);
+            followedUser.followers.add(this);
+        }
+        else System.out.println("Follow already exists");
     }
 
     public void removeFollow(Node followedUser) {
