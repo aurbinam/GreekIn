@@ -3,12 +3,12 @@ import java.util.List;
 public class Person {
     private String name;
     private int age;
-    private boolean gender;
+    private char gender;
     private String occupation;
     private String placeOfStudy;
     private List<String> hobbies;
 
-    public Person(String name, int age, boolean gender, String occupation, String placeOfStudy, List<String> hobbies) {
+    public Person(String name, int age, char gender, String occupation, String placeOfStudy, List<String> hobbies) {
         this.name = name;
         this.age = age;
         this.gender = gender;
@@ -32,10 +32,10 @@ public class Person {
         this.age = age;
     }
 
-    public boolean getGender() {   
+    public char getGender() {   
         return gender;
     }   
-    public void setGender(boolean gender) {
+    public void setGender(char gender) {
         this.gender = gender;
     }
 

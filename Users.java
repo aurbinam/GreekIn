@@ -4,17 +4,19 @@ import java.util.Map;
 
 public class Users extends Person{
     private Map<Integer, Person> userMap;
+    private int userID=0;
     
-    public Users(String name, int age, boolean gender, String occupation, String placeOfStudy, List<String> hobbies) {
+    public Users(String name, int age, char gender, String occupation, String placeOfStudy, List<String> hobbies) {
         super(name, age, gender, occupation, placeOfStudy, hobbies);
         this.userMap = new HashMap<>();       
     }
 
-    public void addUser(int userID, Person person) {
+    public void addUser(Person person) {
         if(userMap.containsKey(userID)) {
             throw new IllegalArgumentException("User ID already exists");
         }
         userMap.put(userID, person);
+        userID++;
     }
 
     public void removeUser(int userID) {
@@ -22,6 +24,7 @@ public class Users extends Person{
             throw new IllegalArgumentException("User does not exist");
         }
         userMap.remove(userID);
+        userID--;
     }
 
     public Person getUser(int userID) {
@@ -31,6 +34,10 @@ public class Users extends Person{
         return userMap.get(userID);
     }
 
+    public int getUserID(){
+        return this.userID;
+    }
+    
     public void updateUser(int userID, Person person) {
         if(!userMap.containsKey(userID)) {
             throw new IllegalArgumentException("User does not exist");

@@ -10,6 +10,10 @@ public class Node {
         return user.getName();
     }
 
+    public Users getUserFromNode(){
+        return this.user;
+    }
+
     public ArrayList<Follow> getFollows() {
         return this.follow;
     }

@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class Graph implements Network{
     private ArrayList<Node> users;
@@ -14,6 +13,11 @@ public class Graph implements Network{
         return node;
     }
 
+    public static Node getNodeFromUser(Users user){
+        Node node = new Node(user);
+        return node;
+    }
+
     public void addFollow(Node follower, Node followed) throws UserNotInNetworkException{
         if(!users.contains(followed) || !users.contains(follower)){
             throw new UserNotInNetworkException("User is not in the network");
@@ -24,15 +28,6 @@ public class Graph implements Network{
 
     public void removeFollow(Node follower, Node followed){
         follower.removeFollow(followed);
-    }
-
-    public Node getUser(String name){
-        for(Node user : this.users){
-            if(user.getName() == name){
-                return user;
-            }
-        }
-        return null;
     }
 
     public void printUserFollowing(Node user) throws UserNotInNetworkException{
@@ -71,17 +66,6 @@ public class Graph implements Network{
         return false;
     }
 
-    public ArrayList<Node> removeDuplicates(ArrayList<Node> users){
-        for(int i = 0; i < users.size(); i++){
-            for(int j = i + 1; j < users.size(); j++){
-                if(users.get(i) == users.get(j)){
-                    users.remove(j);
-                }
-            }
-        }
-        return users;
-    }
-
     public ArrayList<Node> getRecommendedFriends(Node user1){
         ArrayList<Node> recommendedFriends = new ArrayList<Node>();
         for(Node user2 : this.users){
@@ -93,17 +77,31 @@ public class Graph implements Network{
                 }
             }
         }
-        return removeDuplicates(recommendedFriends);
+        return recommendedFriends;
+    }
+
+    public ArrayList<Users> getMutuals(Node user1, Node user2){
+        ArrayList<Node> m = getRecommendedFriends(user1);
+        ArrayList<Users> mutuals = new ArrayList<>();
+        for(Node n : m){
+            if(n==user2){
+                for(Node n1 : user2.getFollowers()){
+                    if(isFollowing(n1, user1)) mutuals.add(n1.getUserFromNode());
+                }
+            }
+        }
+        return mutuals;
+
     }
 
 
     public static void main(String[] args) {
         Network greekIn = new Graph();
-        Users John = new Users("John", 25, true, "consultant", "Bayern", new ArrayList<String>());
-        Users Jane = new Users("Jane", 28, true, "engineer", "Berlin", new ArrayList<String>());
-        Users Jack = new Users("Jack", 30, true, "doctor", "Munich", new ArrayList<String>());
-        Users Jill = new Users("Jill", 22, true, "student", "Hamburg", new ArrayList<String>());
-        Users Brock = new Users("Brock", 27, true, "teacher", "Cologne", new ArrayList<String>());
+        Users John = new Users("John", 25, 'M', "consultant", "Bayern", new ArrayList<String>());
+        Users Jane = new Users("Jane", 28, 'F', "engineer", "Berlin", new ArrayList<String>());
+        Users Jack = new Users("Jack", 30, 'M', "doctor", "Munich", new ArrayList<String>());
+        Users Jill = new Users("Jill", 22, 'F', "student", "Hamburg", new ArrayList<String>());
+        Users Brock = new Users("Brock", 27, 'T', "teacher", "Cologne", new ArrayList<String>());
 
         Node nodeJohn = greekIn.addUser(John);
         Node nodeJane = greekIn.addUser(Jane);
@@ -120,6 +118,7 @@ public class Graph implements Network{
             greekIn.addFollow(nodeJill, nodeBrock);
             greekIn.addFollow(nodeJack, nodeJohn);
             greekIn.addFollow(nodeJohn, nodeBrock);
+            greekIn.addFollow(nodeJack, nodeBrock);
         } catch(UserNotInNetworkException e){
             System.out.println(e.getMessage());
         }
@@ -153,5 +152,7 @@ public class Graph implements Network{
         for(Node user : recommendedFriends){
             System.out.println(user.getName());
         }
+
+        
     }
 }
