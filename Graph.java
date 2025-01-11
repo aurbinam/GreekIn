@@ -1,17 +1,22 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Graph implements Network{
     private ArrayList<Node> users;
+    private Users userData;
+    private int number=0;
     
-    public Graph(){
+    public Graph(Users userData){
         this.users = new ArrayList<Node>();
+        this.userData = userData;
     }
 
-    public Node addUser(Users user){
-        Node node = new Node(user);
+    public Node addUser(Person person){
+        Node node = new Node(person);
         this.users.add(node);
+        node.setNodeId(number++);
+        userData.addUser(node, person);
         return node;
     }
 
@@ -107,9 +112,9 @@ public class Graph implements Network{
     public int compareAge(Node user1, Node user2){
         int age1 = getAgeGroup(user1.getUserFromNode().getAge());
         int age2 = getAgeGroup(user2.getUserFromNode().getAge());
-        if(age1 == age2) return 20;
-        else if(age1 < age2 && age1+1 == age2) return 10;
-        else if(age1 > age2 && age1-1 == age2) return 10;
+        if(age1 == age2) return 1;
+        else if(age1 < age2 && age1+1 == age2) return 5;
+        else if(age1 > age2 && age1-1 == age2) return 5;
         else return 0;
     }
 
@@ -130,6 +135,16 @@ public class Graph implements Network{
         else return 5;
     }
 
+    public int compareOccupations(Node user1, Node user2){
+        if(user1.getUserFromNode().getOccupation()==user2.getUserFromNode().getOccupation()) return 10;
+        else return 0;
+    }
+
+    public int compareStudy(Node user1, Node user2){
+        if(user1.getUserFromNode().getPlaceOfStudy()==user2.getUserFromNode().getPlaceOfStudy()) return 10;
+        else return 0;
+    }
+
     public ArrayList<String> getMutuals(Node user1, Node user2){
         ArrayList<Node> m = removeDuplicates(getRecommendedFriends(user1));
         ArrayList<String> mutuals = new ArrayList<>();
@@ -147,8 +162,8 @@ public class Graph implements Network{
         int percent = 0;
         ArrayList<String> mutuals = getMutuals(user1, user2);
         for(int i=0; i<mutuals.size();i++){
-            if(percent<=45){  
-                percent += 5;
+            if(percent<=50){  
+                percent += 2;
             }
             else break;
         }
@@ -159,8 +174,10 @@ public class Graph implements Network{
             int age = compareAge(user1, user2);
             int hobbies = compareHobbies(user1, user2);
             int gender = compareGender(user1, user2);
+            int study = compareStudy(user1, user2);
+            int occupation = compareOccupations(user1, user2);
             int mutuals = compareMutuals(user1, user2);
-            return age+hobbies+gender+mutuals;
+            return age+hobbies+gender+study+occupation+mutuals;
         }
 
     public ArrayList<Node> canBeRecommended(Node user1){
@@ -207,7 +224,7 @@ public class Graph implements Network{
         return noDuplicates;
     }
     
-    public ArrayList<String> recommend(Node user1){
+    public ArrayList<String> recommendNode(Node user1){
         ArrayList<String> recommendations = new ArrayList<>();
         ArrayList<Node> canBeRecommended = canBeRecommended(user1);
         int[] scale = recommendedUsersToScale(user1, canBeRecommended);
@@ -216,7 +233,7 @@ public class Graph implements Network{
             for(int j=0; j<canBeRecommended.size();j++){
                 String userName = canBeRecommended.get(j).getName();
                 if(!recommendations.contains(userName) && scale[i]==calculateScale(user1, canBeRecommended.get(j))){
-                    recommendations.add(canBeRecommended.get(j).getName() + " " + String.valueOf(scale[i]));
+                    recommendations.add("User ID: " + canBeRecommended.get(j).getNodeId() + ", Name: " + canBeRecommended.get(j).getName() + ", Recommendation Scale: " + String.valueOf(scale[i]));
                 }
             }
         }
@@ -226,8 +243,8 @@ public class Graph implements Network{
 
     public void printRecommendations(Node user1){
         Scanner scan = new Scanner(System.in);
-        System.out.println(user1.getName() + "'s recommended users are:");
-        ArrayList<String> recommendations = recommend(user1);
+        System.out.println("\n" + user1.getName() + "'s recommended users are:");
+        ArrayList<String> recommendations = recommendNode(user1);
         for(int i=0; i < 2;i++){
             System.out.println(recommendations.get(i));
         }
@@ -240,88 +257,64 @@ public class Graph implements Network{
         }
     }
 
-    public static void main(String[] args) {
-        Network greekIn = new Graph();
-        String[] hobbies = {"Football","Basketball","Chess","Coding","Dancing"};
-        Users John = new Users("John", 25, 'M', "consultant", "Bayern", hobbies);
-        Users Jane = new Users("Jane", 28, 'F', "engineer", "Berlin", hobbies);
-        Users Jack = new Users("Jack", 30, 'M', "doctor", "Munich", hobbies);
-        Users Jill = new Users("Jill", 22, 'F', "student", "Hamburg", hobbies);
-        Users Brock = new Users("Brock", 27, 'T', "teacher", "Cologne", hobbies);
-        Users Freida = new Users("Freida", 55, 'F', "whatever", "wherever", hobbies);
-        Users Max = new Users("Max", 55, 'M', "whatever", "wherever", hobbies);
+    public void displayUser(Node user){
+        System.out.println(user.getName() + " profile information: ");
+        userData.printUser(user.getNodeId());
+    }
 
-        Node nodeJohn = greekIn.addUser(John);
-        Node nodeJane = greekIn.addUser(Jane);
-        Node nodeJack = greekIn.addUser(Jack);
-        Node nodeJill = greekIn.addUser(Jill);
-        Node nodeBrock = greekIn.addUser(Brock);
-        Node nodeFreida = greekIn.addUser(Freida);
-        Node nodeMax = greekIn.addUser(Max);
-
-        try{
-            greekIn.addFollow(nodeJack, nodeJill);
-            greekIn.addFollow(nodeJohn, nodeJill);
-            greekIn.addFollow(nodeJane, nodeJill);
-            greekIn.addFollow(nodeJill, nodeJack);
-            greekIn.addFollow(nodeJane, nodeJohn);
-            greekIn.addFollow(nodeJohn, nodeBrock);
-            greekIn.addFollow(nodeJill, nodeBrock);
-            greekIn.addFollow(nodeJohn, nodeFreida);
-            greekIn.addFollow(nodeJill, nodeFreida);
-            greekIn.addFollow(nodeJill, nodeFreida);
-            greekIn.addFollow(nodeJohn, nodeFreida);
-            
-        } catch(UserNotInNetworkException e){
-            System.out.println(e.getMessage());
-        }
-
-        // System.out.println("removing");
-        greekIn.removeFollow(nodeJohn, nodeBrock);
-        greekIn.removeFollow(nodeJohn, nodeFreida);
-
-        // nodeJohn.printFollowing();
+    public void displayFollowers(Node user){
+        System.out.print("List of followers for " + user.getName() + ":");
+        user.printFollowers();
         System.out.println();
-        // nodeBrock.printFollowers();
+    }
 
-        
-        // System.out.println(greekIn.compareMutuals(nodeJane, nodeBrock));
-        // nodeJane.printFollowing();  
-        // greekIn.printUserFollowing(Jack);
-        // if(greekIn.areFriends(Jack, Jane)){
-        //     System.out.println("John and Jane are friends");
-        // } else {
-        //     System.out.println("John and Jane are not friends");
-        // }
+    public void displayFollowing(Node user){
+        System.out.print(user.getName() + " follows:");
+        user.printFollowing();
+        System.out.println();
+    }
 
-        
-        // try{
-        //     System.out.println("John is followed by");
-        //     greekIn.printUserFollowers(nodeJohn);
-        //     System.out.println("John follows");
-        //     greekIn.printUserFollowing(nodeJohn);
+    public ArrayList<String> getFriends(Node user){
+        ArrayList<Node> following = user.getFollowing();
+        ArrayList<String> friends = new ArrayList<>();
+        for(Node n : following){
+            if(areFriends(user, n)){
+                friends.add(n.getName());
+            }
+        }
+       return friends;
+    }
 
-        //     System.out.println("Jane Follows");
-        //     greekIn.printUserFollowing(nodeJane);
-        // } catch(UserNotInNetworkException e){
-        //     System.out.println(e.getMessage());
-        // }
+    public void displayFriends(Node user){
+        ArrayList<String> friends = getFriends(user);
+        if (!friends.isEmpty()) {
+            System.out.print(user.getName() + " is friends with: ");
+            for(String s : friends){
+                System.out.println(s);
+            }
+        }
+        else System.out.println(user.getName() + " has no friends :(");
+    }
 
+    public void removeUser(Node user){
+        userData.removeUser(user);
+        user.removeUser(user);
+        users.remove(user);
+        for (Node n : users){
+            Follow f = new Follow(n, user);
+            if(n.getFollowers().contains(user)) n.getFollowers().remove(user);
+            if(n.getFollowing().contains(user)) n.getFollowing().remove(user);
+            if (n.getFollows().contains(f)) n.getFollows().remove(f);
+        }
+        System.out.println(user.getName() + " has been removed");
+    }
 
-        // System.out.println("Janes recommended freiends are");
-        // ArrayList<Node> recommendedFriends = greekIn.getRecommendedFriends(nodeJane);
-        // for(Node user : recommendedFriends){
-        //     System.out.println(user.getName());
-        // }
-        // nodeBrock.printFollowers();
-        // System.out.println("sdaf");
-        // nodeJill.printFollowing();
-
-        // int scale = greekIn.calculateScale(nodeJane, nodeBrock);
-        // System.out.println("Janes recommendation scale with Brock is " + scale);
-
-        greekIn.printRecommendations(nodeJane);
-
-        // greekIn.recommend(nodeJane);
+    public void updateUser(Node user, Person person){
+        userData.updateUser(user, person);
+        int temp = user.getNodeId();
+        removeUser(user);
+        Node newUser = addUser(person);
+        newUser.setNodeId(temp);
+        number--;
     }
 }

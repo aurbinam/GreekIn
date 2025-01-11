@@ -1,16 +1,25 @@
 import java.util.ArrayList;
 
 public class Node {
-    private Users user;
+    private int nodeId;
+    private Person user;
     private ArrayList<Follow> follow;
     private ArrayList<Node> followers;
     private ArrayList<Node> following;
     
+    public int getNodeId() {
+        return this.nodeId;
+    }
+
+    public void setNodeId(int nodeId) {
+        this.nodeId = nodeId;
+    }
+
     public String getName() {
         return user.getName();
     }
 
-    public Users getUserFromNode(){
+    public Person getUserFromNode(){
         return this.user;
     }
 
@@ -32,17 +41,17 @@ public class Node {
 
     public void printFollowing() {
         for (Node u : this.following) {
-            System.out.println(u.getName());
+            System.out.print(", " + u.getName());
         }
     }
 
     public void printFollowers() {
         for (Node u : this.followers) {
-            System.out.println(u.getName());
+            System.out.print(", " + u.getName());
         }
     }
     
-    public Node(Users user) {
+    public Node(Person user) {
         this.user = user;
         this.follow = new ArrayList<Follow>();
         this.followers = new ArrayList<Node>();
@@ -76,5 +85,11 @@ public class Node {
         if (!found) {
             throw new FollowDoesntExistException(this.getName() + " is not following " + followedUser.getName());
         }
+    }
+
+    public void removeUser(Node user){
+        user.follow.clear();
+        user.followers.clear();
+        user.following.clear();
     }
 }

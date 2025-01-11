@@ -1,62 +1,81 @@
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class Users extends Person{
-    private Map<Integer, Person> userMap;
-    private int userID=0;
-    
-    public Users(String name, int age, char gender, String occupation, String placeOfStudy, String[] hobbies) {
-        super(name, age, gender, occupation, placeOfStudy, hobbies);
-        this.userMap = new HashMap<>();       
+public class Users{
+    private Node userId;
+    private Map<Node, Person> userMap;
+
+    Users(){
+        this.userMap = new HashMap<>();
     }
 
-    public void addUser(Person person) {
-        if(userMap.containsKey(userID)) {
+    public void addUser (Node userId, Person person) {
+        this.userId = userId;
+        if(userMap.containsKey(userId)) {
             throw new IllegalArgumentException("User ID already exists");
         }
-        userMap.put(userID, person);
-        userID++;
+        userMap.put(userId, person);
     }
 
-    public void removeUser(int userID) {
-        if(!userMap.containsKey(userID)) {
+    public void removeUser(Node userId) {
+        if(!userMap.containsKey(userId)) {
             throw new IllegalArgumentException("User does not exist");
         }
-        userMap.remove(userID);
-        userID--;
+        userMap.remove(userId);
     }
 
-    public Person getUser(int userID) {
-        if(!userMap.containsKey(userID)) {
+    public Person getUser(Node userId) {
+        if(!userMap.containsKey(userId)) {
             throw new IllegalArgumentException("User does not exist");
         }
-        return userMap.get(userID);
+        return userMap.get(userId);
     }
 
-    public int getUserID(){
-        return this.userID;
+    public Node getuserId(){
+        return this.userId;
     }
 
-    public void updateUser(int userID, Person person) {
-        if(!userMap.containsKey(userID)) {
+    public void updateUser(Node userId, Person person) {
+        if(!userMap.containsKey(userId)) {
             throw new IllegalArgumentException("User does not exist");
         }
-        userMap.put(userID, person);
+        userMap.put(userId, person);
     }
 
     public void displayUsers() {
         if(userMap.isEmpty()) {
             System.out.println("No users to display");
         }else {
-            for(Map.Entry<Integer, Person> entry : userMap.entrySet()) {
-                System.out.println(entry.getValue().toString());
+            for(Map.Entry<Node, Person> entry : userMap.entrySet()) {
+                System.out.print("User ID: " + entry.getKey().getNodeId() + " ");
+                System.out.print(entry.getValue().toString());
+                entry.getValue().printHobbies();
+                System.out.println();
             }
         }
     }
 
-
-        public int countUsers() {
-            return userMap.size();
+    public void printUser(int findId){
+        if(userMap.isEmpty()) {
+            System.out.println("No users to display");
+        }else {
+            for(Map.Entry<Node, Person> entry : userMap.entrySet()) {
+                if(entry.getKey().getNodeId()==findId){
+                    System.out.print("User ID: " + entry.getKey().getNodeId() + " ");
+                    System.out.print(entry.getValue().toString());
+                    entry.getValue().printHobbies();
+                    System.out.println();
+                }
+            }
         }
+    }
+    
+
+    public int countUsers() {
+        return userMap.size();
+    }
+
+    public void setUserId(Node userId) {
+        this.userId = userId;
+    }
 }

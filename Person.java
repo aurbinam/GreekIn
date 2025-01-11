@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class Person {
     private String name;
     private int age;
@@ -17,6 +15,10 @@ public class Person {
         this.hobbies = hobbies;
     }
 
+    public Person getPerson(){
+        return this;
+    }
+    
     //getters and setters
     public String getName() {
         return name;
@@ -57,12 +59,18 @@ public class Person {
         return hobbies;
     }
     
+    public void printHobbies(){
+        for(String s : hobbies){
+            System.out.print(" '" + s + "', ");
+        }
+    }
     public void setHobbies(String[] hobbies) {
         this.hobbies = hobbies;
     }
-
+    
     public String toString() {
-        return "Person{name='" + name + "', age=" + age + ", gender='" + gender + "', occupation='" + occupation +
-               "', placeOfStudy='" + placeOfStudy + "', hobbies=" + hobbies;
+        return "Name = '" + name + "', Age = " + age + ", Gender = '" + gender + "', Occupation = '" + occupation +
+               "', PlaceOfStudy = '" + placeOfStudy + "', Hobbies = ";
     }
+
 }
