@@ -170,10 +170,6 @@ public class Graph implements Network{
                 arr.add(n);
             }
         }
-        System.out.println(user1.getName() + "'s Recommended arr are: ");
-        for(int j=0; j<arr.size();j++){
-            System.out.println(arr.get(j).getName());
-        }
         return arr;
     }
 
@@ -201,6 +197,16 @@ public class Graph implements Network{
 		}
 	}
 
+    public ArrayList<String> removeDuplicatesFromString(ArrayList<String> list){
+        ArrayList<String> noDuplicates = new ArrayList<>();
+        for(String s : list){
+            if(!noDuplicates.contains(s)){
+                noDuplicates.add(s);
+            }
+        }
+        return noDuplicates;
+    }
+    
     public ArrayList<String> recommend(Node user1){
         ArrayList<String> recommendations = new ArrayList<>();
         ArrayList<Node> canBeRecommended = canBeRecommended(user1);
@@ -208,17 +214,13 @@ public class Graph implements Network{
         reverseInsertionSort(scale, scale.length);
         for(int i=0; i<scale.length;i++){
             for(int j=0; j<canBeRecommended.size();j++){
-                if(scale[i]==calculateScale(user1, canBeRecommended.get(j))){
+                String userName = canBeRecommended.get(j).getName();
+                if(!recommendations.contains(userName) && scale[i]==calculateScale(user1, canBeRecommended.get(j))){
                     recommendations.add(canBeRecommended.get(j).getName() + " " + String.valueOf(scale[i]));
-
                 }
             }
         }
-        System.out.println(user1.getName() + "'s Recommended friends are: ");
-        for(int j=0; j<canBeRecommended.size();j++){
-            System.out.println(recommendations.get(j));
-        }
-        return recommendations;
+        return removeDuplicatesFromString(recommendations);
     }
 
 
@@ -226,13 +228,13 @@ public class Graph implements Network{
         Scanner scan = new Scanner(System.in);
         System.out.println(user1.getName() + "'s recommended users are:");
         ArrayList<String> recommendations = recommend(user1);
-        for(int i=0; i < 1;i++){
+        for(int i=0; i < 2;i++){
             System.out.println(recommendations.get(i));
         }
         System.out.println("Do you want to see more? (Y for yes)");
         char userInput = scan.next().charAt(0);
         if(userInput=='y' || userInput=='Y'){
-            for(int i=1;i < recommendations.size(); i++){
+            for(int i=2;i < recommendations.size(); i++){
                 System.out.println(recommendations.get(i));
             }
         }
@@ -276,6 +278,7 @@ public class Graph implements Network{
 
         // System.out.println("removing");
         greekIn.removeFollow(nodeJohn, nodeBrock);
+        greekIn.removeFollow(nodeJohn, nodeFreida);
 
         // nodeJohn.printFollowing();
         System.out.println();
@@ -317,8 +320,8 @@ public class Graph implements Network{
         // int scale = greekIn.calculateScale(nodeJane, nodeBrock);
         // System.out.println("Janes recommendation scale with Brock is " + scale);
 
-        // greekIn.printRecommendations(nodeJane);
+        greekIn.printRecommendations(nodeJane);
 
-        greekIn.recommend(nodeJane);
+        // greekIn.recommend(nodeJane);
     }
 }
