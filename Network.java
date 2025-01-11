@@ -11,4 +11,7 @@ public interface Network{
     public ArrayList<Node> getRecommendedFriends(Node user);
     public ArrayList<String> getMutuals(Node user1, Node user2);
     public int calculateScale(Node user1, Node user2);
+    public ArrayList<String> recommend(Node user1);
+    public void printRecommendations(Node user1);
+    public int compareMutuals(Node user1, Node user2);
 }

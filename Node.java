@@ -49,23 +49,32 @@ public class Node {
         this.following = new ArrayList<Node>();
     }
 
-    public void addFollowing(Node followedUser) {
+    public void addFollowing(Node followedUser) throws UserAlreadyFollowingException{
         if(!following.contains(followedUser)){
             Follow f = new Follow(this, followedUser);
             this.follow.add(f);
             this.following.add(followedUser);
             followedUser.followers.add(this);
         }
-        else System.out.println("Follow already exists");
+        else{
+            throw new UserAlreadyFollowingException(this.getName() + " is already following " +  followedUser.getName());
+        } 
     }
 
-    public void removeFollow(Node followedUser) {
-        for (int i = 0; i < this.following.size(); i++) {
-            if (this.follow.get(i).getFollowed() == followedUser) {
-                this.follow.remove(i);
+    public void removeFollow(Node followedUser) throws FollowDoesntExistException{
+        boolean found = false;
+        for(Follow f : follow){
+            System.out.println(f.getFollowed().getName());
+            if(f.getFollower().equals(this) && f.getFollowed().equals(followedUser)){
+                this.follow.remove(f);
                 this.following.remove(followedUser);
-                return;
+                followedUser.followers.remove(this);
+                found = true;
+                break;
             }
+        }
+        if (!found) {
+            throw new FollowDoesntExistException(this.getName() + " is not following " + followedUser.getName());
         }
     }
 }
