@@ -64,7 +64,7 @@ public class Node {
     public void removeFollow(Node followedUser) throws FollowDoesntExistException{
         boolean found = false;
         for(Follow f : follow){
-            System.out.println(f.getFollowed().getName());
+            // System.out.println(f.getFollowed().getName());
             if(f.getFollower().equals(this) && f.getFollowed().equals(followedUser)){
                 this.follow.remove(f);
                 this.following.remove(followedUser);

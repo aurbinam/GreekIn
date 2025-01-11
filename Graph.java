@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,12 +114,12 @@ public class Graph implements Network{
     }
 
     public int compareHobbies(Node user1, Node user2){
-        List<String> l1 = user1.getUserFromNode().getHobbies();
-        List<String> l2 = user2.getUserFromNode().getHobbies();
+        String[] l1 = user1.getUserFromNode().getHobbies();
+        String[] l2 = user2.getUserFromNode().getHobbies();
         int percent=0;
-        for(int i=0; i<l1.size();i++){
-            for(int j=0; j<l2.size();j++){
-                if(l1.get(i)==l2.get(j)) percent += 5;
+        for(int i=0; i<l1.length;i++){
+            for(int j=0; j<l2.length;j++){
+                if(l1[i]==l2[j]) percent += 4;
             }
         }
         return percent;
@@ -146,7 +147,10 @@ public class Graph implements Network{
         int percent = 0;
         ArrayList<String> mutuals = getMutuals(user1, user2);
         for(int i=0; i<mutuals.size();i++){
-            percent += 5;
+            if(percent<=45){  
+                percent += 5;
+            }
+            else break;
         }
         return percent;
     }
@@ -165,6 +169,10 @@ public class Graph implements Network{
             if(!isFollowing(user1, n) && n!=user1){
                 arr.add(n);
             }
+        }
+        System.out.println(user1.getName() + "'s Recommended arr are: ");
+        for(int j=0; j<arr.size();j++){
+            System.out.println(arr.get(j).getName());
         }
         return arr;
     }
@@ -202,30 +210,44 @@ public class Graph implements Network{
             for(int j=0; j<canBeRecommended.size();j++){
                 if(scale[i]==calculateScale(user1, canBeRecommended.get(j))){
                     recommendations.add(canBeRecommended.get(j).getName() + " " + String.valueOf(scale[i]));
+
                 }
             }
+        }
+        System.out.println(user1.getName() + "'s Recommended friends are: ");
+        for(int j=0; j<canBeRecommended.size();j++){
+            System.out.println(recommendations.get(j));
         }
         return recommendations;
     }
 
 
     public void printRecommendations(Node user1){
+        Scanner scan = new Scanner(System.in);
         System.out.println(user1.getName() + "'s recommended users are:");
         ArrayList<String> recommendations = recommend(user1);
-        for(int i=0; i < recommendations.size();i++){
+        for(int i=0; i < 1;i++){
             System.out.println(recommendations.get(i));
         }
-        
+        System.out.println("Do you want to see more? (Y for yes)");
+        char userInput = scan.next().charAt(0);
+        if(userInput=='y' || userInput=='Y'){
+            for(int i=1;i < recommendations.size(); i++){
+                System.out.println(recommendations.get(i));
+            }
+        }
     }
 
     public static void main(String[] args) {
         Network greekIn = new Graph();
-        Users John = new Users("John", 25, 'M', "consultant", "Bayern", new ArrayList<String>());
-        Users Jane = new Users("Jane", 28, 'F', "engineer", "Berlin", new ArrayList<String>());
-        Users Jack = new Users("Jack", 30, 'M', "doctor", "Munich", new ArrayList<String>());
-        Users Jill = new Users("Jill", 22, 'F', "student", "Hamburg", new ArrayList<String>());
-        Users Brock = new Users("Brock", 27, 'T', "teacher", "Cologne", new ArrayList<String>());
-        Users Freida = new Users("Freida", 55, 'F', "whatever", "wherever", new ArrayList<String>());
+        String[] hobbies = {"Football","Basketball","Chess","Coding","Dancing"};
+        Users John = new Users("John", 25, 'M', "consultant", "Bayern", hobbies);
+        Users Jane = new Users("Jane", 28, 'F', "engineer", "Berlin", hobbies);
+        Users Jack = new Users("Jack", 30, 'M', "doctor", "Munich", hobbies);
+        Users Jill = new Users("Jill", 22, 'F', "student", "Hamburg", hobbies);
+        Users Brock = new Users("Brock", 27, 'T', "teacher", "Cologne", hobbies);
+        Users Freida = new Users("Freida", 55, 'F', "whatever", "wherever", hobbies);
+        Users Max = new Users("Max", 55, 'M', "whatever", "wherever", hobbies);
 
         Node nodeJohn = greekIn.addUser(John);
         Node nodeJane = greekIn.addUser(Jane);
@@ -233,6 +255,7 @@ public class Graph implements Network{
         Node nodeJill = greekIn.addUser(Jill);
         Node nodeBrock = greekIn.addUser(Brock);
         Node nodeFreida = greekIn.addUser(Freida);
+        Node nodeMax = greekIn.addUser(Max);
 
         try{
             greekIn.addFollow(nodeJack, nodeJill);
@@ -251,7 +274,14 @@ public class Graph implements Network{
             System.out.println(e.getMessage());
         }
 
+        // System.out.println("removing");
         greekIn.removeFollow(nodeJohn, nodeBrock);
+
+        // nodeJohn.printFollowing();
+        System.out.println();
+        // nodeBrock.printFollowers();
+
+        
         // System.out.println(greekIn.compareMutuals(nodeJane, nodeBrock));
         // nodeJane.printFollowing();  
         // greekIn.printUserFollowing(Jack);
@@ -284,9 +314,11 @@ public class Graph implements Network{
         // System.out.println("sdaf");
         // nodeJill.printFollowing();
 
-        int scale = greekIn.calculateScale(nodeJane, nodeBrock);
-        System.out.println("Janes recommendation scale with Brock is " + scale);
+        // int scale = greekIn.calculateScale(nodeJane, nodeBrock);
+        // System.out.println("Janes recommendation scale with Brock is " + scale);
 
-        greekIn.printRecommendations(nodeJane);
+        // greekIn.printRecommendations(nodeJane);
+
+        greekIn.recommend(nodeJane);
     }
 }

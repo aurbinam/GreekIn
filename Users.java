@@ -6,7 +6,7 @@ public class Users extends Person{
     private Map<Integer, Person> userMap;
     private int userID=0;
     
-    public Users(String name, int age, char gender, String occupation, String placeOfStudy, List<String> hobbies) {
+    public Users(String name, int age, char gender, String occupation, String placeOfStudy, String[] hobbies) {
         super(name, age, gender, occupation, placeOfStudy, hobbies);
         this.userMap = new HashMap<>();       
     }
@@ -37,7 +37,7 @@ public class Users extends Person{
     public int getUserID(){
         return this.userID;
     }
-    
+
     public void updateUser(int userID, Person person) {
         if(!userMap.containsKey(userID)) {
             throw new IllegalArgumentException("User does not exist");

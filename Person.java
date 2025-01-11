@@ -6,9 +6,9 @@ public class Person {
     private char gender;
     private String occupation;
     private String placeOfStudy;
-    private List<String> hobbies;
+    private String[] hobbies;
 
-    public Person(String name, int age, char gender, String occupation, String placeOfStudy, List<String> hobbies) {
+    public Person(String name, int age, char gender, String occupation, String placeOfStudy, String[] hobbies) {
         this.name = name;
         this.age = age;
         this.gender = gender;
@@ -53,11 +53,11 @@ public class Person {
         this.placeOfStudy = placeOfStudy;
     }
 
-    public List<String> getHobbies() {
+    public String[] getHobbies() {
         return hobbies;
     }
     
-    public void setHobbies(List<String> hobbies) {
+    public void setHobbies(String[] hobbies) {
         this.hobbies = hobbies;
     }
 
