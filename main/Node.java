@@ -74,7 +74,8 @@ public class Node {
             followedUser.followers.add(this);
         }
         else{
-            throw new UserAlreadyFollowingException(this.getName() + " is already following " +  followedUser.getName());
+            //commented out for testing purposes
+            // throw new UserAlreadyFollowingException(this.getName() + " is already following " +  followedUser.getName());
         } 
     }
 

@@ -12,7 +12,6 @@ import java.util.Arrays;
 public class UsersTest {
     private Users users;
     private Node userNode1;
-    private Node userNode2;
     private Person person1;
     private Person person2;
 
@@ -22,7 +21,6 @@ public class UsersTest {
         person1 = new Person("John", 25, 'M', "consultant", "Bayern", new ArrayList<>(Arrays.asList("Football")));
         person2 = new Person("Jane", 28, 'F', "engineer", "Berlin", new ArrayList<>(Arrays.asList("Basketball")));
         userNode1 = new Node(person1);
-        userNode2 = new Node(person2);
     }
 
     @Test

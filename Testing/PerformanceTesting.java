@@ -30,6 +30,7 @@ public class PerformanceTesting {
         Node userBrock = greekIn.addUser(Brock);
         Node userFreida = greekIn.addUser(Freida);
         Node userMax = greekIn.addUser(Max);
+        Node userFreida2 = greekIn.addUser(Freida2);
         
         // Follow relationships
         try {
@@ -42,6 +43,7 @@ public class PerformanceTesting {
             greekIn.addFollow(userJill, userBrock);
             greekIn.addFollow(userJohn, userFreida);
             greekIn.addFollow(userJill, userFreida);
+            greekIn.addFollow(userBrock, userFreida2);
         } catch (UserNotInNetworkException e) {
             System.out.println(e.getMessage());
         }
@@ -82,7 +84,7 @@ public class PerformanceTesting {
 
         // Generate random users
         
-        createRandomUsers((Graph) greekIn, 2000);  // Create 100 random users
+        createRandomUsers((Graph) greekIn, 1000);  // Create 100 random users
         long randomStartTime = System.currentTimeMillis();  // Start timing random user creation
 
         // Find recommendations for Jane
@@ -143,7 +145,7 @@ public class PerformanceTesting {
                         graph.addFollow(user, randomUser);
 
                     } catch (UserNotInNetworkException e) {
-                        System.out.println(e.getMessage());
+                       
                     }
                 }
             }

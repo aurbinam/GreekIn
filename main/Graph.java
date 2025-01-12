@@ -147,7 +147,6 @@ public class Graph implements Network{
                 for(Node n1 : user2.getFollowers()){
                     if(isFollowing(user1, n1) && !mutuals.contains(n1.getName())){
                         mutuals.add(n1.getName());
-                        System.out.println(mutuals.size());
                     }
                     
                 }
@@ -162,7 +161,6 @@ public class Graph implements Network{
         for(int i=0; i<mutuals.size();i++){
             if(percent<=50){  
                 percent += 5;
-                System.out.println(mutuals.get(i));
             }
             else break;
         }
@@ -244,7 +242,7 @@ public class Graph implements Network{
         System.out.println("Do you want to see more? (Y for yes)");
         char userInput = scan.next().charAt(0);
         if(userInput=='y' || userInput=='Y'){
-            for(int i=2;i < 10; i++){
+            for(int i=2;i < recommendations.size(); i++){
                 System.out.println(recommendations.get(i));
             }
         }

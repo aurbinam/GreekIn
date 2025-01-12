@@ -18,8 +18,7 @@ public class GreekIn{
         Person Freida = new Person("Freida", 55, 'F', "whatever", "wherever", hobbies);
         Person Max = new Person("Max", 55, 'M', "whatever", "wherever", hobbies);
         Person Freida2 = new Person("Freida", 55, 'F', "whatever", "wherever", hobbies);
-        //10 + 5 + 10 + 10 + 20 +
-        //0 + 10 + 20 + 5
+
         Node userJohn = greekIn.addUser(John);
         Node userJane = greekIn.addUser(Jane);
         Node userJack = greekIn.addUser(Jack);
@@ -27,24 +26,29 @@ public class GreekIn{
         Node userBrock = greekIn.addUser(Brock);
         Node userFreida = greekIn.addUser(Freida);
         Node userMax = greekIn.addUser(Max);
+        Node userFreida2 = greekIn.addUser(Freida2);
         
     
-        // try{
-        //     greekIn.addFollow(userJack, userJill);
-        //     greekIn.addFollow(userJohn, userJill);
-        //     greekIn.addFollow(userJane, userJill);
-        //     greekIn.addFollow(userJill, userJack);
-        //     greekIn.addFollow(userJane, userJohn);
-        //     greekIn.addFollow(userJohn, userBrock);
-        //     greekIn.addFollow(userJill, userBrock);
-        //     greekIn.addFollow(userJohn, userFreida);
-        //     greekIn.addFollow(userJill, userFreida);
-        //     greekIn.addFollow(userJane, userMax);
-        //     greekIn.addFollow(userMax, userBrock);
+        try{
+            greekIn.addFollow(userJack, userJill);
+            greekIn.addFollow(userJohn, userJill);
+            greekIn.addFollow(userJane, userJill);
+            greekIn.addFollow(userJill, userJack);
+            greekIn.addFollow(userJane, userJohn);
+            greekIn.addFollow(userJohn, userBrock);
+            greekIn.addFollow(userJill, userBrock);
+            greekIn.addFollow(userJohn, userFreida);
+            greekIn.addFollow(userJill, userFreida);
+            greekIn.addFollow(userJane, userMax);
+            greekIn.addFollow(userMax, userBrock);
+            greekIn.addFollow(userMax, userFreida2);
+            greekIn.addFollow(userFreida2, userJane);
+            greekIn.addFollow(userJack, userJane);
+            greekIn.addFollow(userJane, userJack);
             
-        // } catch(UserNotInNetworkException e){
-        //     System.out.println(e.getMessage());
-        // }
+        } catch(UserNotInNetworkException e){
+            System.out.println(e.getMessage());
+        }
     
         greekIn.removeFollow(userJohn, userBrock);
         greekIn.removeFollow(userJohn, userFreida);
@@ -78,7 +82,5 @@ public class GreekIn{
         greekIn.updateUser(userMax, new Person("Max", 90, 'L', "rans", "rasmd", noHobbies));
 
         greekIn.printRecommendations(userJane);
-
-        greekIn.getMutuals(userJane, userBrock);
     }
 }
