@@ -1,3 +1,5 @@
+//The Node represents a user and their connections to other users in the network
+
 import java.util.ArrayList;
 
 public class Node {
@@ -21,6 +23,10 @@ public class Node {
 
     public Person getUserFromNode(){
         return this.user;
+    }
+
+    public void setPerson(Person user){
+        this.user = user;
     }
 
     public ArrayList<Follow> getFollows() {
@@ -58,6 +64,7 @@ public class Node {
         this.following = new ArrayList<Node>();
     }
 
+    //Creates a new follow between current user and followed user. adds to the current user's following the followed user, and also adds the current user to the followed user's list of followers
     public void addFollowing(Node followedUser) throws UserAlreadyFollowingException{
         if(!following.contains(followedUser)){
             Follow f = new Follow(this, followedUser);
@@ -70,10 +77,10 @@ public class Node {
         } 
     }
 
+    //Current user unfollows someone, they are also removed from their followers list, and the follow is removed from the network
     public void removeFollow(Node followedUser) throws FollowDoesntExistException{
         boolean found = false;
         for(Follow f : follow){
-            // System.out.println(f.getFollowed().getName());
             if(f.getFollower().equals(this) && f.getFollowed().equals(followedUser)){
                 this.follow.remove(f);
                 this.following.remove(followedUser);
@@ -87,9 +94,11 @@ public class Node {
         }
     }
 
+    //Removes user information stored in the node
     public void removeUser(Node user){
         user.follow.clear();
         user.followers.clear();
         user.following.clear();
     }
+
 }

@@ -1,3 +1,5 @@
+//Users ADT, uses a HashMap data structure in which user information is stored and their unique key is tracked by a node in the network
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +11,7 @@ public class Users{
         this.userMap = new HashMap<>();
     }
 
+    //Adds / Removes user from the map
     public void addUser (Node userId, Person person) {
         this.userId = userId;
         if(userMap.containsKey(userId)) {
@@ -24,6 +27,7 @@ public class Users{
         userMap.remove(userId);
     }
 
+    //Retrieves user from the map
     public Person getUser(Node userId) {
         if(!userMap.containsKey(userId)) {
             throw new IllegalArgumentException("User does not exist");
@@ -35,13 +39,15 @@ public class Users{
         return this.userId;
     }
 
+    //Updates user information in the map
     public void updateUser(Node userId, Person person) {
         if(!userMap.containsKey(userId)) {
             throw new IllegalArgumentException("User does not exist");
         }
         userMap.put(userId, person);
     }
-
+    
+    //Displays all users currently registered
     public void displayUsers() {
         if(userMap.isEmpty()) {
             System.out.println("No users to display");

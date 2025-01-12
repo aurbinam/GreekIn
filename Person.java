@@ -1,25 +1,27 @@
+//Person class contains all of the information correlating to the user.
+
 public class Person {
     private String name;
     private int age;
     private char gender;
     private String occupation;
-    private String placeOfStudy;
+    private String location;
     private String[] hobbies;
-
-    public Person(String name, int age, char gender, String occupation, String placeOfStudy, String[] hobbies) {
+     
+    public Person(String name, int age, char gender, String occupation, String location, String[] hobbies) {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.occupation = occupation;
-        this.placeOfStudy = placeOfStudy;
+        this.location = location;
         this.hobbies = hobbies;
     }
 
+    //Getters and Setters
     public Person getPerson(){
         return this;
     }
     
-    //getters and setters
     public String getName() {
         return name;
     } 
@@ -48,11 +50,11 @@ public class Person {
         this.occupation = occupation;
     }
 
-    public String getPlaceOfStudy() {   
-        return placeOfStudy;    
+    public String getLocation() {   
+        return location;    
     }
-    public void setPlaceOfStudy(String placeOfStudy) {
-        this.placeOfStudy = placeOfStudy;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String[] getHobbies() {
@@ -70,7 +72,7 @@ public class Person {
     
     public String toString() {
         return "Name = '" + name + "', Age = " + age + ", Gender = '" + gender + "', Occupation = '" + occupation +
-               "', PlaceOfStudy = '" + placeOfStudy + "', Hobbies = ";
+               "', Location = '" + location + "', Hobbies = ";
     }
 
 }

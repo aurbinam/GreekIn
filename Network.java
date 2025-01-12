@@ -8,12 +8,13 @@ public interface Network{
     public void printUserFollowers(Node user) throws UserNotInNetworkException;
     public boolean isFollowing(Node follower, Node followed);
     public boolean areFriends(Node user1, Node user2);
-    public ArrayList<Node> getRecommendedFriends(Node user);
+    public ArrayList<Node> getPotentialFollows(Node user);
     public ArrayList<String> getMutuals(Node user1, Node user2);
     public int calculateScale(Node user1, Node user2);
     public ArrayList<String> recommendNode(Node user1);
     public void printRecommendations(Node user1);
     public int compareMutuals(Node user1, Node user2);
+    public void printAllUsers();
 
 
     public void displayUser(Node user);

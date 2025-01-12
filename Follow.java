@@ -1,3 +1,5 @@
+//The Follow class represents a link between two users in the network
+
 public class Follow {
     private Node follower;
     private Node followed;

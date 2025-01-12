@@ -1,3 +1,5 @@
+//The Network ADT uses a Graph as its base data structure. It keeps track of all of the users registered and their connections between each other.
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -5,6 +7,7 @@ import java.util.ArrayList;
 public class Graph implements Network{
     private ArrayList<Node> users;
     private Users userData;
+    //Number is used to assign automatically a unique userId to each user added
     private int number=0;
     
     public Graph(Users userData){
@@ -12,6 +15,7 @@ public class Graph implements Network{
         this.userData = userData;
     }
 
+    //Adds a user to the network, and creates a node where they are stored
     public Node addUser(Person person){
         Node node = new Node(person);
         this.users.add(node);
@@ -20,6 +24,8 @@ public class Graph implements Network{
         return node;
     }
 
+
+    //Adds / removes a follow between two users, where the follower follows the followed
     public void addFollow(Node follower, Node followed) throws UserNotInNetworkException{
         if(!users.contains(followed) || !users.contains(follower)){
             throw new UserNotInNetworkException("User is not in the network");
@@ -41,6 +47,7 @@ public class Graph implements Network{
         }
     }
 
+    //Displays user's following / followers list
     public void printUserFollowing(Node user) throws UserNotInNetworkException{
         if (user.getFollowing().isEmpty()) {
             throw new UserNotInNetworkException("User is not in the network");
@@ -55,6 +62,7 @@ public class Graph implements Network{
         user.printFollowers();
     }
 
+    //Checks if a user is following another
     public boolean isFollowing(Node follower, Node followed){
         for(Follow f : follower.getFollows()){
             if(f.getFollowed() == followed){
@@ -64,6 +72,7 @@ public class Graph implements Network{
         return false;
     }
 
+    //Checks if two users are following each other
     public boolean areFriends(Node user1, Node user2){
         for(Follow f : user1.getFollows()){
             if(f.getFollowed() == user2){
@@ -77,12 +86,13 @@ public class Graph implements Network{
         return false;
     }
 
-    public ArrayList<Node> getRecommendedFriends(Node user1){
+    //Gets all of the users that a given user does not follow but are followed by users in their following
+    public ArrayList<Node> getPotentialFollows(Node user1){
         ArrayList<Node> recommendedFriends = new ArrayList<Node>();
         for(Node user2 : this.users){
             if(user2 != user1 && isFollowing(user1, user2)){
                 for(Node n : user2.getFollowing()){
-                    if(!isFollowing(user1, n) && !user1.equals(n)){
+                    if(!isFollowing(user1, n)){
                         recommendedFriends.add(n);
                     }
                 }
@@ -91,6 +101,7 @@ public class Graph implements Network{
         return recommendedFriends;
     }
 
+    //Removes all of the duplicates in a list of nodes
     public ArrayList<Node> removeDuplicates(ArrayList<Node> list){
         ArrayList<Node> noDuplicates = new ArrayList<>();
         for(Node n : list){
@@ -101,6 +112,7 @@ public class Graph implements Network{
         return noDuplicates;
     }
 
+    //Methods used for calculating the percentage of likelihood for a user to follow another user
     public int getAgeGroup(int age){
         if(age<=18) return 1;
         else if(age<=30) return 2;
@@ -112,7 +124,7 @@ public class Graph implements Network{
     public int compareAge(Node user1, Node user2){
         int age1 = getAgeGroup(user1.getUserFromNode().getAge());
         int age2 = getAgeGroup(user2.getUserFromNode().getAge());
-        if(age1 == age2) return 1;
+        if(age1 == age2) return 10;
         else if(age1 < age2 && age1+1 == age2) return 5;
         else if(age1 > age2 && age1-1 == age2) return 5;
         else return 0;
@@ -141,12 +153,13 @@ public class Graph implements Network{
     }
 
     public int compareStudy(Node user1, Node user2){
-        if(user1.getUserFromNode().getPlaceOfStudy()==user2.getUserFromNode().getPlaceOfStudy()) return 10;
+        if(user1.getUserFromNode().getLocation()==user2.getUserFromNode().getLocation()) return 10;
         else return 0;
     }
 
+    //Gets user1 and user2 which is not followed by user1 and finds every mutual connection they have
     public ArrayList<String> getMutuals(Node user1, Node user2){
-        ArrayList<Node> m = removeDuplicates(getRecommendedFriends(user1));
+        ArrayList<Node> m = removeDuplicates(getPotentialFollows(user1));
         ArrayList<String> mutuals = new ArrayList<>();
         for(Node n : m){
             if(n==user2){
@@ -180,6 +193,7 @@ public class Graph implements Network{
             return age+hobbies+gender+study+occupation+mutuals;
         }
 
+    //Gets all of the users in the network which are not followed by a given user
     public ArrayList<Node> canBeRecommended(Node user1){
         ArrayList<Node> arr = new ArrayList<>();
         for(Node n : users){
@@ -190,6 +204,7 @@ public class Graph implements Network{
         return arr;
     }
 
+    //Stores every relationship percentage in an int array for sorting purpouses
     public int[] recommendedUsersToScale(Node user1, ArrayList<Node> recommendedUsers){
         int[] scale = new int[recommendedUsers.size()];
         for(int i=0; i<recommendedUsers.size();i++){
@@ -224,6 +239,7 @@ public class Graph implements Network{
         return noDuplicates;
     }
     
+    //Sorts the scale and matches every number to the recommendation number given for the selected user
     public ArrayList<String> recommendNode(Node user1){
         ArrayList<String> recommendations = new ArrayList<>();
         ArrayList<Node> canBeRecommended = canBeRecommended(user1);
@@ -237,10 +253,10 @@ public class Graph implements Network{
                 }
             }
         }
-        return removeDuplicatesFromString(recommendations);
+        return removeDuplicatesFromString(recommendations); //Removes duplicates in case of two users having the same recommendation number
     }
 
-
+    //Displays all of the recommendations sorted in descending order by their recommendation scale with the user
     public void printRecommendations(Node user1){
         Scanner scan = new Scanner(System.in);
         System.out.println("\n" + user1.getName() + "'s recommended users are:");
@@ -257,23 +273,34 @@ public class Graph implements Network{
         }
     }
 
+    //Displays all information about a user
     public void displayUser(Node user){
         System.out.println(user.getName() + " profile information: ");
         userData.printUser(user.getNodeId());
     }
 
+    //Displays all users in the network
+    public void printAllUsers(){
+        for(Node user : users){
+            displayUser(user);
+        }
+    }
+
+    //Displays all users the given user is followed by
     public void displayFollowers(Node user){
         System.out.print("List of followers for " + user.getName() + ":");
         user.printFollowers();
         System.out.println();
     }
 
+    //Displays all users the given user follows
     public void displayFollowing(Node user){
         System.out.print(user.getName() + " follows:");
         user.printFollowing();
         System.out.println();
     }
 
+    //Gets all of the users which mutually follow each other with the given user
     public ArrayList<String> getFriends(Node user){
         ArrayList<Node> following = user.getFollowing();
         ArrayList<String> friends = new ArrayList<>();
@@ -285,6 +312,7 @@ public class Graph implements Network{
        return friends;
     }
 
+    //Prints all of the friends of a given user
     public void displayFriends(Node user){
         ArrayList<String> friends = getFriends(user);
         if (!friends.isEmpty()) {
@@ -296,6 +324,7 @@ public class Graph implements Network{
         else System.out.println(user.getName() + " has no friends :(");
     }
 
+    //Removes a user from the network and map, deleting them fully
     public void removeUser(Node user){
         userData.removeUser(user);
         user.removeUser(user);
@@ -309,12 +338,9 @@ public class Graph implements Network{
         System.out.println(user.getName() + " has been removed");
     }
 
+    //Updates the infromation about a specific user based on their userId
     public void updateUser(Node user, Person person){
         userData.updateUser(user, person);
-        int temp = user.getNodeId();
-        removeUser(user);
-        Node newUser = addUser(person);
-        newUser.setNodeId(temp);
-        number--;
+        user.setPerson(person);
     }
 }

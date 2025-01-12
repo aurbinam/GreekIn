@@ -12,107 +12,60 @@ public class GreekIn{
         Person Freida = new Person("Freida", 55, 'F', "whatever", "wherever", hobbies);
         Person Max = new Person("Max", 55, 'M', "whatever", "wherever", hobbies);
         Person Freida2 = new Person("Freida", 55, 'F', "whatever", "wherever", hobbies);
-    
-        Node nodeJohn = greekIn.addUser(John);
-        Node nodeJane = greekIn.addUser(Jane);
-        Node nodeJack = greekIn.addUser(Jack);
-        Node nodeJill = greekIn.addUser(Jill);
-        Node nodeBrock = greekIn.addUser(Brock);
-        Node nodeFreida = greekIn.addUser(Freida);
-        Node nodeMax = greekIn.addUser(Max);
-        Node nodeFreida2 = greekIn.addUser(Freida2);
+
+        Node userJohn = greekIn.addUser(John);
+        Node userJane = greekIn.addUser(Jane);
+        Node userJack = greekIn.addUser(Jack);
+        Node userJill = greekIn.addUser(Jill);
+        Node userBrock = greekIn.addUser(Brock);
+        Node userFreida = greekIn.addUser(Freida);
+        Node userMax = greekIn.addUser(Max);
+        
     
         try{
-            greekIn.addFollow(nodeJack, nodeJill);
-            greekIn.addFollow(nodeJohn, nodeJill);
-            greekIn.addFollow(nodeJane, nodeJill);
-            greekIn.addFollow(nodeJill, nodeJack);
-            greekIn.addFollow(nodeJane, nodeJohn);
-            greekIn.addFollow(nodeJohn, nodeBrock);
-            greekIn.addFollow(nodeJill, nodeBrock);
-            greekIn.addFollow(nodeJohn, nodeFreida);
-            greekIn.addFollow(nodeJill, nodeFreida);
-            greekIn.addFollow(nodeJill, nodeFreida);
-            greekIn.addFollow(nodeJohn, nodeFreida);
+            greekIn.addFollow(userJack, userJill);
+            greekIn.addFollow(userJohn, userJill);
+            greekIn.addFollow(userJane, userJill);
+            greekIn.addFollow(userJill, userJack);
+            greekIn.addFollow(userJane, userJohn);
+            greekIn.addFollow(userJohn, userBrock);
+            greekIn.addFollow(userJill, userBrock);
+            greekIn.addFollow(userJohn, userFreida);
+            greekIn.addFollow(userJill, userFreida);
+            greekIn.addFollow(userJill, userFreida);
+            greekIn.addFollow(userJohn, userFreida);
             
         } catch(UserNotInNetworkException e){
             System.out.println(e.getMessage());
         }
     
-        // System.out.println("removing");
-        greekIn.removeFollow(nodeJohn, nodeBrock);
-        greekIn.removeFollow(nodeJohn, nodeFreida);
+        greekIn.removeFollow(userJohn, userBrock);
+        greekIn.removeFollow(userJohn, userFreida);
     
-        // nodeJohn.printFollowing();
         System.out.println();
-        // nodeBrock.printFollowers();
-    
-        
-        // System.out.println(greekIn.compareMutuals(nodeJane, nodeBrock));
-        // nodeJane.printFollowing();  
-        // greekIn.printUserFollowing(Jack);
-        // if(greekIn.areFriends(Jack, Jane)){
-        //     System.out.println("John and Jane are friends");
-        // } else {
-        //     System.out.println("John and Jane are not friends");
-        // }
-    
-        
-        // try{
-        //     System.out.println("John is followed by");
-        //     greekIn.printUserFollowers(nodeJohn);
-        //     System.out.println("John follows");
-        //     greekIn.printUserFollowing(nodeJohn);
-    
-        //     System.out.println("Jane Follows");
-        //     greekIn.printUserFollowing(nodeJane);
-        // } catch(UserNotInNetworkException e){
-        //     System.out.println(e.getMessage());
-        // }
-    
-    
-        // System.out.println("Janes recommended freiends are");
-        // ArrayList<Node> recommendedFriends = greekIn.getRecommendedFriends(nodeJane);
-        // for(Node user : recommendedFriends){
-        //     System.out.println(user.getName());
-        // }
-        // nodeBrock.printFollowers();
-        // System.out.println("sdaf");
-        // nodeJill.printFollowing();
-    
-        // int scale = greekIn.calculateScale(nodeJane, nodeBrock);
-        // System.out.println("Janes recommendation scale with Brock is " + scale);
-    
-        // greekIn.printRecommendations(nodeJane);
-    
-        // greekIn.recommendNode(nodeJane);
-        // System.out.println("");
-
-        // users.displayUsers();
-
-        greekIn.displayUser(nodeJill);
+        greekIn.displayUser(userJane);
         System.out.println();
-        greekIn.displayFollowers(nodeJill);
+        greekIn.displayFollowers(userJane);
         System.out.println();
-        greekIn.displayFollowing(nodeJill);
+        greekIn.displayFollowing(userJane);
         System.out.println();
-        greekIn.displayFriends(nodeJill);
+        greekIn.displayFriends(userJane);
         System.out.println();
 
-        greekIn.removeUser(nodeJack);
+        greekIn.removeUser(userJack);
         System.out.println();
 
-        greekIn.displayFollowers(nodeJill);
+        greekIn.displayFollowers(userJane);
         System.out.println();
-        greekIn.displayFollowing(nodeJill);
+        greekIn.displayFollowing(userJane);
         System.out.println();
-        greekIn.displayFriends(nodeJill);
+        greekIn.displayFriends(userJane);
 
-        greekIn.printRecommendations(nodeJill);
+        greekIn.printRecommendations(userJane);
         System.out.println();
 
-        greekIn.updateUser(nodeMax, new Person("Max", 90, 'L', "rans", "rasmd", noHobbies));
+        greekIn.updateUser(userMax, new Person("Max", 90, 'L', "rans", "rasmd", noHobbies));
 
-        greekIn.printRecommendations(nodeJill);
+        greekIn.printRecommendations(userJane);
     }
 }
