@@ -289,7 +289,7 @@ public class Graph implements Network{
         ArrayList<String> recommendations = new ArrayList<>();
         ArrayList<Node> canBeRecommended = canBeRecommended(user1);
         int[] scale = recommendedUsersToScale(user1, canBeRecommended);
-        quickSort(scale, 0, scale.length-1);
+        reverseInsertionSort(scale, scale.length);
         for(int i=0; i<scale.length;i++){
             for(int j=0; j<canBeRecommended.size();j++){
                 String userName = canBeRecommended.get(j).getName();
@@ -306,13 +306,13 @@ public class Graph implements Network{
         Scanner scan = new Scanner(System.in);
         System.out.println("\n" + user1.getName() + "'s recommended users are:");
         ArrayList<String> recommendations = recommendUsers(user1);
-        for(int i=0; i < 5;i++){
+        for(int i=0; i < 2;i++){
             System.out.println(recommendations.get(i));
         }
         System.out.println("Do you want to see more? (Y for yes)");
         char userInput = scan.next().charAt(0);
         if(userInput=='y' || userInput=='Y'){
-            for(int i=5;i < 20; i++){
+            for(int i=2;i < recommendations.size(); i++){
                 System.out.println(recommendations.get(i));
             }
         }

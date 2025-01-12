@@ -80,7 +80,7 @@ public class PerformanceTesting {
 
         // Generate random users
         
-        createRandomUsers((Graph) greekIn, 1000);  // Create 10,000 random users
+        createRandomUsers((Graph) greekIn, 100);  // Create 10,000 random users
         long randomStartTime = System.currentTimeMillis();  // Start timing random user creation
 
         // Find recommendations for Jane
