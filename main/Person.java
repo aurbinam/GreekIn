@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 
 public class Person {
     private String name;
@@ -7,9 +8,9 @@ public class Person {
     private char gender;
     private String occupation;
     private String location;
-    private String[] hobbies;
+    private ArrayList<String> hobbies;
      
-    public Person(String name, int age, char gender, String occupation, String location, String[] hobbies) {
+    public Person(String name, int age, char gender, String occupation, String location, ArrayList<String> hobbies) {
         this.name = name;
         this.age = age;
         this.gender = gender;
@@ -58,7 +59,7 @@ public class Person {
         this.location = location;
     }
 
-    public String[] getHobbies() {
+    public ArrayList<String> getHobbies() {
         return hobbies;
     }
     
@@ -67,7 +68,7 @@ public class Person {
             System.out.print(" '" + s + "', ");
         }
     }
-    public void setHobbies(String[] hobbies) {
+    public void setHobbies(ArrayList<String> hobbies) {
         this.hobbies = hobbies;
     }
     

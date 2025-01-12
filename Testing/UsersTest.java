@@ -6,6 +6,9 @@ import main.*;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class UsersTest {
     private Users users;
     private Node userNode1;
@@ -16,8 +19,8 @@ public class UsersTest {
     @Before
     public void setUp() {
         users = new Users();
-        person1 = new Person("John", 25, 'M', "consultant", "Bayern", new String[]{"Football"});
-        person2 = new Person("Jane", 28, 'F', "engineer", "Berlin", new String[]{"Basketball"});
+        person1 = new Person("John", 25, 'M', "consultant", "Bayern", new ArrayList<>(Arrays.asList("Football")));
+        person2 = new Person("Jane", 28, 'F', "engineer", "Berlin", new ArrayList<>(Arrays.asList("Basketball")));
         userNode1 = new Node(person1);
         userNode2 = new Node(person2);
     }

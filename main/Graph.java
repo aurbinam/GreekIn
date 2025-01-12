@@ -69,25 +69,13 @@ public class Graph implements Network{
 
     //Checks if a user is following another
     public boolean isFollowing(Node follower, Node followed){
-        for(Follow f : follower.getFollows()){
-            if(f.getFollowed() == followed){
-                return true;
-            }
-        }
-        return false;
+        if(follower.getFollowing().contains(followed)) return true;
+        else return false;
     }
 
     //Checks if two users are following each other
     public boolean areFriends(Node user1, Node user2){
-        for(Follow f : user1.getFollows()){
-            if(f.getFollowed() == user2){
-                for(Follow f2 : user2.getFollows()){
-                    if(f2.getFollowed() == user1){
-                        return true;
-                    }
-                }
-            }
-        }
+        if(user1.getFollowing().contains(user2) && user2.getFollowing().contains(user1)) return true;
         return false;
     }
 
@@ -97,24 +85,13 @@ public class Graph implements Network{
         for(Node user2 : this.users){
             if(user2 != user1 && isFollowing(user1, user2)){
                 for(Node n : user2.getFollowing()){
-                    if(!isFollowing(user1, n)){
+                    if(!n.equals(user1) && !isFollowing(user1, n) && !recommendedFriends.contains(n)){
                         recommendedFriends.add(n);
                     }
                 }
             }
         }
         return recommendedFriends;
-    }
-
-    //Removes all of the duplicates in a list of nodes
-    public ArrayList<Node> removeDuplicates(ArrayList<Node> list){
-        ArrayList<Node> noDuplicates = new ArrayList<>();
-        for(Node n : list){
-            if(!noDuplicates.contains(n)){
-                noDuplicates.add(n);
-            }
-        }
-        return noDuplicates;
     }
 
     //Methods used for calculating the percentage of likelihood for a user to follow another user
@@ -136,13 +113,11 @@ public class Graph implements Network{
     }
 
     public int compareHobbies(Node user1, Node user2){
-        String[] l1 = user1.getUserFromNode().getHobbies();
-        String[] l2 = user2.getUserFromNode().getHobbies();
+        ArrayList<String> l1 = user1.getUserFromNode().getHobbies();
+        ArrayList<String> l2 = user2.getUserFromNode().getHobbies();
         int percent=0;
-        for(int i=0; i<l1.length;i++){
-            for(int j=0; j<l2.length;j++){
-                if(l1[i]==l2[j]) percent += 4;
-            }
+        for(int i=0; i<l1.size();i++){
+            if(l2.contains(l1.get(i))) percent+=4;
         }
         return percent;
     }
@@ -153,23 +128,28 @@ public class Graph implements Network{
     }
 
     public int compareOccupations(Node user1, Node user2){
-        if(user1.getUserFromNode().getOccupation()==user2.getUserFromNode().getOccupation()) return 10;
+        if(user1.getUserFromNode().getOccupation()==user2.getUserFromNode().getOccupation()) return 5;
         else return 0;
     }
 
-    public int compareStudy(Node user1, Node user2){
-        if(user1.getUserFromNode().getLocation()==user2.getUserFromNode().getLocation()) return 10;
+    public int compareLocation(Node user1, Node user2){
+        if(user1.getUserFromNode().getLocation()==user2.getUserFromNode().getLocation()) return 5;
         else return 0;
     }
 
     //Gets user1 and user2 which is not followed by user1 and finds every mutual connection they have
     public ArrayList<String> getMutuals(Node user1, Node user2){
-        ArrayList<Node> m = removeDuplicates(getPotentialFollows(user1));
+        ArrayList<Node> m = getPotentialFollows(user1);
         ArrayList<String> mutuals = new ArrayList<>();
+
         for(Node n : m){
             if(n==user2){
                 for(Node n1 : user2.getFollowers()){
-                    if(isFollowing(user1, n1)) mutuals.add(n1.getName());
+                    if(isFollowing(user1, n1) && !mutuals.contains(n1.getName())){
+                        mutuals.add(n1.getName());
+                        System.out.println(mutuals.size());
+                    }
+                    
                 }
             }
         }
@@ -181,7 +161,8 @@ public class Graph implements Network{
         ArrayList<String> mutuals = getMutuals(user1, user2);
         for(int i=0; i<mutuals.size();i++){
             if(percent<=50){  
-                percent += 2;
+                percent += 5;
+                System.out.println(mutuals.get(i));
             }
             else break;
         }
@@ -192,7 +173,7 @@ public class Graph implements Network{
             int age = compareAge(user1, user2);
             int hobbies = compareHobbies(user1, user2);
             int gender = compareGender(user1, user2);
-            int study = compareStudy(user1, user2);
+            int study = compareLocation(user1, user2);
             int occupation = compareOccupations(user1, user2);
             int mutuals = compareMutuals(user1, user2);
             return age+hobbies+gender+study+occupation+mutuals;
@@ -233,72 +214,23 @@ public class Graph implements Network{
 			theArray[ loc ] = temp;
 		}
 	}
-
-    private static final void swapValues( int [ ] a, int index1, int index2 )
-	{
-		int tmp = a[ index1 ];
-		a[ index1 ] = a[ index2 ];
-		a[ index2 ] = tmp;
-	}
-
-	private static void quickSort( int [] theArray , int low , int high )
-	{
-		int pivot_index;
-		if ( low < high ) 
-		{
-			pivot_index = partition ( theArray , low , high );
-			quickSort( theArray , low , pivot_index - 1 );
-			quickSort( theArray , pivot_index + 1 , high );
-		}
-	}
-
-	private static int partition( int [] theArray , int low , int high )
-	{
-		int left = low;
-		int right = high;
-		int pivot = theArray[ low ];
-
-		while ( left < right )
-		{
-			while ( ( left < high ) && ( theArray[ left ] <= pivot ) )
-				left++;
-
-			while ( theArray[ right ] > pivot )
-				right--;
-
-			if ( left < right ) 
-				swapValues( theArray , left , right );
-		}
-
-		swapValues( theArray , low , right );
-		return right;
-	}
-
-    public ArrayList<String> removeDuplicatesFromString(ArrayList<String> list){
-        ArrayList<String> noDuplicates = new ArrayList<>();
-        for(String s : list){
-            if(!noDuplicates.contains(s)){
-                noDuplicates.add(s);
-            }
-        }
-        return noDuplicates;
-    }
     
     //Sorts the scale and matches every number to the recommendation number given for the selected user
     public ArrayList<String> recommendUsers(Node user1){
         ArrayList<String> recommendations = new ArrayList<>();
         ArrayList<Node> canBeRecommended = canBeRecommended(user1);
         int[] scale = recommendedUsersToScale(user1, canBeRecommended);
-        reverseInsertionSort(scale, scale.length);
+        reverseInsertionSort(scale,scale.length);
         for(int i=0; i<scale.length;i++){
             for(int j=0; j<canBeRecommended.size();j++){
                 String userName = canBeRecommended.get(j).getName();
-                if(!recommendations.contains(userName) && scale[i]==calculateScale(user1, canBeRecommended.get(j))){
-                    recommendations.add("User ID: " + canBeRecommended.get(j).getNodeId() + ", Name: " + canBeRecommended.get(j).getName() + ", Recommendation Scale: " + String.valueOf(scale[i]));
+                String recommendation = "User ID: " + canBeRecommended.get(j).getNodeId() + ", Name: " + canBeRecommended.get(j).getName() + ", Recommendation Scale: " + String.valueOf(scale[i]);
+                if(!recommendations.contains(userName) && scale[i]==calculateScale(user1, canBeRecommended.get(j)) && !recommendations.contains(recommendation)){
+                    recommendations.add(recommendation);
                 }
             }
         }
-        return removeDuplicatesFromString(recommendations); //Removes duplicates in case of two users having the same recommendation number
+        return recommendations;
     }
 
     //Displays all of the recommendations sorted in descending order by their recommendation scale with the user
@@ -312,7 +244,7 @@ public class Graph implements Network{
         System.out.println("Do you want to see more? (Y for yes)");
         char userInput = scan.next().charAt(0);
         if(userInput=='y' || userInput=='Y'){
-            for(int i=2;i < recommendations.size(); i++){
+            for(int i=2;i < 10; i++){
                 System.out.println(recommendations.get(i));
             }
         }

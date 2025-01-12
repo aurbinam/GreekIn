@@ -17,4 +17,7 @@ public interface Network{
     public void displayFriends(Node user);
     public void removeUser(Node user) throws UserNotInNetworkException;
     public void updateUser(Node user, Person person);
+
+    public ArrayList<Node> getUsers();
+    public ArrayList<String> getMutuals(Node user1, Node user2);
 }

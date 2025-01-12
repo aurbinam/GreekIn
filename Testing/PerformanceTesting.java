@@ -1,4 +1,6 @@
 package Testing;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import main.*;
 public class PerformanceTesting {
@@ -10,17 +12,17 @@ public class PerformanceTesting {
         Network greekIn = new Graph(users);
 
         // Create hardcoded users
-        String[] hobbies = {"Football", "Basketball", "Chess", "Coding", "Dancing"};
-        String[] noHobbies = {"a", "b", "c", "d", "e"};
+        ArrayList<String> hobbies = new ArrayList<>(Arrays.asList("Football", "Basketball", "Chess", "Coding", "Dancing"));
+        ArrayList<String> noHobbies = new ArrayList<>(Arrays.asList("a","b","c","d","e"));
         Person John = new Person("John", 25, 'M', "consultant", "Bayern", hobbies);
-        Person Jane = new Person("Jane", 28, 'F', "engineer", "Berlin", hobbies);
+        Person Jane = new Person("Jane", 28, 'F', "Engineer", "Berlin", hobbies);
         Person Jack = new Person("Jack", 30, 'M', "doctor", "Munich", hobbies);
         Person Jill = new Person("Jill", 22, 'F', "student", "Hamburg", hobbies);
         Person Brock = new Person("Brock", 27, 'T', "engineer", "Berlin", hobbies);
         Person Freida = new Person("Freida", 55, 'F', "whatever", "wherever", hobbies);
         Person Max = new Person("Max", 55, 'M', "whatever", "wherever", hobbies);
         Person Freida2 = new Person("Freida", 55, 'F', "whatever", "wherever", hobbies);
-        
+
         Node userJohn = greekIn.addUser(John);
         Node userJane = greekIn.addUser(Jane);
         Node userJack = greekIn.addUser(Jack);
@@ -80,11 +82,11 @@ public class PerformanceTesting {
 
         // Generate random users
         
-        createRandomUsers((Graph) greekIn, 100);  // Create 10,000 random users
+        createRandomUsers((Graph) greekIn, 2000);  // Create 100 random users
         long randomStartTime = System.currentTimeMillis();  // Start timing random user creation
 
         // Find recommendations for Jane
-        greekIn.recommendUsers(userJane);
+        greekIn.recommendUsers(greekIn.getUsers().get(7));
 
         long randomEndTime = System.currentTimeMillis();  // End timing random user creation
         System.out.println("Time taken to find recommendations for User ID: " + userJane.getNodeId() + " Name: " + userJane.getName() + " for " + users.countUsers() + " number of users: " + (randomEndTime - randomStartTime) + " milliseconds");
@@ -96,7 +98,8 @@ public class PerformanceTesting {
         long endTime = System.currentTimeMillis();
         System.out.println("Total execution time: " + (endTime - startTime) + " milliseconds");
 
-        greekIn.printRecommendations(userJane);
+        greekIn.displayUser(greekIn.getUsers().get(7));
+        greekIn.printRecommendations(greekIn.getUsers().get(7));
         
     }
 
@@ -106,7 +109,7 @@ public class PerformanceTesting {
         String[] baseNames = {"Alex", "Jordan", "Taylor", "Morgan", "Casey", "Riley", "Jamie", "Cameron", "Quinn", "Drew"};
         String[] occupations = {"Engineer", "Doctor", "Teacher", "Consultant", "Student", "Artist", "Developer", "Manager", "Pilot", "Designer"};
         String[] locations = {"New York", "Los Angeles", "Berlin", "London", "Tokyo", "Paris", "Rome", "Sydney", "Madrid", "Amsterdam"};
-        String[] hobbiesPool = {"Reading", "Cooking", "Gaming", "Traveling", "Coding", "Dancing", "Photography", "Running", "Yoga", "Fishing"};
+        ArrayList<String> hobbiesPool = new ArrayList<>(Arrays.asList("Reading", "Cooking", "Gaming", "Traveling", "Coding", "Dancing", "Photography", "Running", "Yoga", "Fishing"));
 
         Random random = new Random();
 
@@ -120,21 +123,29 @@ public class PerformanceTesting {
             String occupation = occupations[random.nextInt(occupations.length)];
             String location = locations[random.nextInt(locations.length)];
 
-            // Assign 1 to 5 random hobbies
-            int hobbiesCount = random.nextInt(5) + 1;
-            String[] hobbies = new String[hobbiesCount];
+            // Assign 5 random hobbies
+            int hobbiesCount = 5;
+            ArrayList<String> hobbies = new ArrayList<>(5);
             for (int j = 0; j < hobbiesCount; j++) {
-                hobbies[j] = hobbiesPool[random.nextInt(hobbiesPool.length)];
+                hobbies.add(hobbiesPool.get(random.nextInt(hobbiesPool.size())));
             }
 
             // Create and add the user to the graph
             Person person = new Person(name, age, gender, occupation, location, hobbies);
-            Node user1 = graph.addUser(person);
-            try{
-                graph.addFollow(user1, graph.getUsers().get(random.nextInt(graph.getUsers().size())));
-            }
-            catch(UserNotInNetworkException e){
-                System.out.println(e.getMessage());
+            Node user = graph.addUser(person);
+
+            // Make the user follow random existing users
+            int followsCount = random.nextInt(100) + 1; // Each user follows 1 to 50 other users
+            for (int j = 0; j < followsCount; j++) {
+                Node randomUser = graph.getUsers().get(random.nextInt(graph.getUsers().size()));
+                if (randomUser != null && !randomUser.equals(user)) {
+                    try {
+                        graph.addFollow(user, randomUser);
+
+                    } catch (UserNotInNetworkException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
             }
         }
     }

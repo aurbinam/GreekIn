@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
@@ -22,8 +23,8 @@ public class GraphTest {
     public void setUp() {
         users = new Users();
         graph = new Graph(users);
-        personJohn = new Person("John", 25, 'M', "consultant", "Bayern", new String[]{"Football"});
-        personJane = new Person("Jane", 28, 'F', "engineer", "Berlin", new String[]{"Basketball"});
+        personJohn = new Person("John", 25, 'M', "consultant", "Bayern", new ArrayList<>(Arrays.asList("Football")));
+        personJane = new Person("Jane", 28, 'F', "engineer", "Berlin", new ArrayList<>(Arrays.asList("Basketball")));
         nodeJohn = graph.addUser(personJohn);
         nodeJane = graph.addUser(personJane);
     }
@@ -43,7 +44,7 @@ public class GraphTest {
 
     @Test(expected = UserNotInNetworkException.class)
     public void testAddFollowUserNotInNetwork() throws UserNotInNetworkException {
-        Node nodeNotInNetwork = new Node(new Person("NotInNetwork", 30, 'M', "job", "location", new String[]{"hobby"}));
+        Node nodeNotInNetwork = new Node(new Person("NotInNetwork", 30, 'M', "job", "location", new ArrayList<>(Arrays.asList("hobby1"))));
         graph.addFollow(nodeJohn, nodeNotInNetwork); // This should throw an exception
     }
 
@@ -67,28 +68,16 @@ public class GraphTest {
         graph.addFollow(nodeJohn, nodeJane);
         graph.addFollow(nodeJane, nodeJohn);
         assertTrue(graph.areFriends(nodeJohn, nodeJane));
-        assertFalse(graph.areFriends(nodeJohn, new Node(new Person("NotFriend", 30, 'M', "job", "location", new String[]{"hobby"}))));
+        assertFalse(graph.areFriends(nodeJohn, new Node(new Person("NotFriend", 30, 'M', "job", "location", new ArrayList<>(Arrays.asList("hobby1"))))));
     }
 
     @Test
     public void testGetPotentialFollows() throws UserNotInNetworkException, UserAlreadyFollowingException {
-        Node nodeJack = graph.addUser(new Person("Jack", 30, 'M', "doctor", "Munich", new String[]{"Chess"}));
+        Node nodeJack = graph.addUser(new Person("Jack", 30, 'M', "doctor", "Munich", new ArrayList<>(Arrays.asList("Chess"))));
         graph.addFollow(nodeJohn, nodeJane);
         graph.addFollow(nodeJane, nodeJack);
         ArrayList<Node> potentialFollows = graph.getPotentialFollows(nodeJohn);
         assertTrue(potentialFollows.contains(nodeJack));
-    }
-
-    @Test
-    public void testRemoveDuplicates() {
-        ArrayList<Node> list = new ArrayList<>();
-        list.add(nodeJohn);
-        list.add(nodeJane);
-        list.add(nodeJohn);
-        ArrayList<Node> noDuplicates = graph.removeDuplicates(list);
-        assertEquals(2, noDuplicates.size());
-        assertTrue(noDuplicates.contains(nodeJohn));
-        assertTrue(noDuplicates.contains(nodeJane));
     }
 
     @Test
@@ -186,7 +175,7 @@ public class GraphTest {
 
     @Test(expected = UserNotInNetworkException.class)
     public void testRemoveUserNotInNetwork() throws UserNotInNetworkException {
-        Node nodeNotInNetwork = new Node(new Person("NotInNetwork", 30, 'M', "job", "location", new String[]{"hobby"}));
+        Node nodeNotInNetwork = new Node(new Person("NotInNetwork", 30, 'M', "job", "location", new ArrayList<>(Arrays.asList("hobby1"))));
         graph.removeUser(nodeNotInNetwork); // This should throw an exception
     }
 
@@ -200,7 +189,7 @@ public class GraphTest {
 
     @Test
     public void testUpdateUser() {
-        Person updatedPerson = new Person("John Updated", 26, 'M', "consultant", "Bayern", new String[]{"Football"});
+        Person updatedPerson = new Person("John Updated", 26, 'M', "consultant", "Bayern", new ArrayList<>(Arrays.asList("Football")));
         graph.updateUser(nodeJohn, updatedPerson);
         assertEquals(updatedPerson, nodeJohn.getUserFromNode());
     }

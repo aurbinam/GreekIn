@@ -6,6 +6,9 @@ import main.*;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class FollowTest {
     private Node follower;
     private Node followed;
@@ -13,8 +16,8 @@ public class FollowTest {
 
     @Before
     public void setUp() {
-        follower = new Node(new Person("Follower", 30, 'M', "bio", "location", new String[]{"hobby1"}));
-        followed = new Node(new Person("Followed", 25, 'F', "bio", "location", new String[]{"hobby2"}));
+        follower = new Node(new Person("Follower", 30, 'M', "bio", "location", new ArrayList<>(Arrays.asList("hobby1"))));
+        followed = new Node(new Person("Followed", 25, 'F', "bio", "location", new ArrayList<>(Arrays.asList("hobby2"))));
         follow = new Follow(follower, followed);
     }
 

@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import main.*;
 
 public class NodeTest {
@@ -14,8 +16,8 @@ public class NodeTest {
 
     @Before
     public void setUp() {
-        personJohn = new Person("John", 25, 'M', "consultant", "Bayern", new String[]{"Football"});
-        personJane = new Person("Jane", 28, 'F', "engineer", "Berlin", new String[]{"Basketball"});
+        personJohn = new Person("John", 25, 'M', "consultant", "Bayern", new ArrayList<>());
+        personJane = new Person("Jane", 28, 'F', "engineer", "Berlin", new ArrayList<>());
         nodeJohn = new Node(personJohn);
         nodeJane = new Node(personJane);
     }

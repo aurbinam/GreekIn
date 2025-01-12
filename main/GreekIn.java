@@ -1,11 +1,15 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class GreekIn{
     public static void main(String[] args) {
         Users users = new Users();
         Network greekIn = new Graph(users);
-        String[] hobbies = {"Football","Basketball","Chess","Coding","Dancing"};
-        String[] noHobbies = {"a","b","c","d","e"};
+        
+        ArrayList<String> hobbies = new ArrayList<>(Arrays.asList("Football", "Basketball", "Chess", "Coding", "Dancing"));
+        ArrayList<String> noHobbies = new ArrayList<>(Arrays.asList("a","b","c","d","e"));
         Person John = new Person("John", 25, 'M', "consultant", "Bayern", hobbies);
         Person Jane = new Person("Jane", 28, 'F', "engineer", "Berlin", hobbies);
         Person Jack = new Person("Jack", 30, 'M', "doctor", "Munich", hobbies);
@@ -14,7 +18,8 @@ public class GreekIn{
         Person Freida = new Person("Freida", 55, 'F', "whatever", "wherever", hobbies);
         Person Max = new Person("Max", 55, 'M', "whatever", "wherever", hobbies);
         Person Freida2 = new Person("Freida", 55, 'F', "whatever", "wherever", hobbies);
-
+        //10 + 5 + 10 + 10 + 20 +
+        //0 + 10 + 20 + 5
         Node userJohn = greekIn.addUser(John);
         Node userJane = greekIn.addUser(Jane);
         Node userJack = greekIn.addUser(Jack);
@@ -24,20 +29,22 @@ public class GreekIn{
         Node userMax = greekIn.addUser(Max);
         
     
-        try{
-            greekIn.addFollow(userJack, userJill);
-            greekIn.addFollow(userJohn, userJill);
-            greekIn.addFollow(userJane, userJill);
-            greekIn.addFollow(userJill, userJack);
-            greekIn.addFollow(userJane, userJohn);
-            greekIn.addFollow(userJohn, userBrock);
-            greekIn.addFollow(userJill, userBrock);
-            greekIn.addFollow(userJohn, userFreida);
-            greekIn.addFollow(userJill, userFreida);
+        // try{
+        //     greekIn.addFollow(userJack, userJill);
+        //     greekIn.addFollow(userJohn, userJill);
+        //     greekIn.addFollow(userJane, userJill);
+        //     greekIn.addFollow(userJill, userJack);
+        //     greekIn.addFollow(userJane, userJohn);
+        //     greekIn.addFollow(userJohn, userBrock);
+        //     greekIn.addFollow(userJill, userBrock);
+        //     greekIn.addFollow(userJohn, userFreida);
+        //     greekIn.addFollow(userJill, userFreida);
+        //     greekIn.addFollow(userJane, userMax);
+        //     greekIn.addFollow(userMax, userBrock);
             
-        } catch(UserNotInNetworkException e){
-            System.out.println(e.getMessage());
-        }
+        // } catch(UserNotInNetworkException e){
+        //     System.out.println(e.getMessage());
+        // }
     
         greekIn.removeFollow(userJohn, userBrock);
         greekIn.removeFollow(userJohn, userFreida);
@@ -71,5 +78,7 @@ public class GreekIn{
         greekIn.updateUser(userMax, new Person("Max", 90, 'L', "rans", "rasmd", noHobbies));
 
         greekIn.printRecommendations(userJane);
+
+        greekIn.getMutuals(userJane, userBrock);
     }
 }
