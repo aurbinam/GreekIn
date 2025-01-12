@@ -1,4 +1,5 @@
-//The Node represents a user and their connections to other users in the network
+package main;
+
 
 import java.util.ArrayList;
 

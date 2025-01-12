@@ -1,3 +1,5 @@
+package main;
+
 public class UserAlreadyFollowingException extends Exception {
 	public UserAlreadyFollowingException() {
 		super();

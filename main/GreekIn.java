@@ -1,3 +1,5 @@
+package main;
+
 public class GreekIn{
     public static void main(String[] args) {
         Users users = new Users();
@@ -49,8 +51,12 @@ public class GreekIn{
         System.out.println();
         greekIn.displayFriends(userJane);
         System.out.println();
-
-        greekIn.removeUser(userJack);
+        try{
+            greekIn.removeUser(userJack);
+        } catch(UserNotInNetworkException e){
+            System.out.println(e.getMessage());
+        }
+        
         System.out.println();
 
         greekIn.displayFollowers(userJane);

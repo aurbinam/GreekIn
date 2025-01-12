@@ -1,4 +1,5 @@
-//Person class contains all of the information correlating to the user.
+package main;
+
 
 public class Person {
     private String name;

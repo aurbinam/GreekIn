@@ -1,4 +1,5 @@
-//The Network ADT uses a Graph as its base data structure. It keeps track of all of the users registered and their connections between each other.
+package main;
+
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -13,6 +14,10 @@ public class Graph implements Network{
     public Graph(Users userData){
         this.users = new ArrayList<Node>();
         this.userData = userData;
+    }
+
+    public ArrayList<Node> getUsers(){
+        return this.users;
     }
 
     //Adds a user to the network, and creates a node where they are stored
@@ -325,17 +330,22 @@ public class Graph implements Network{
     }
 
     //Removes a user from the network and map, deleting them fully
-    public void removeUser(Node user){
-        userData.removeUser(user);
-        user.removeUser(user);
-        users.remove(user);
-        for (Node n : users){
+    public void removeUser(Node user) throws UserNotInNetworkException{
+        if(!users.contains(user)){
+            throw new UserNotInNetworkException("User is not in the network");
+        }
+        else{
+            userData.removeUser(user);
+            user.removeUser(user);
+            users.remove(user);
+            for (Node n : users){
             Follow f = new Follow(n, user);
             if(n.getFollowers().contains(user)) n.getFollowers().remove(user);
             if(n.getFollowing().contains(user)) n.getFollowing().remove(user);
             if (n.getFollows().contains(f)) n.getFollows().remove(f);
         }
         System.out.println(user.getName() + " has been removed");
+        }
     }
 
     //Updates the infromation about a specific user based on their userId

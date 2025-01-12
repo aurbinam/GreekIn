@@ -1,3 +1,5 @@
+package main;
+
 public class UserNotInNetworkException extends Exception {
 	public UserNotInNetworkException() {
 		super();

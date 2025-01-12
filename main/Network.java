@@ -1,4 +1,5 @@
-//Interface for the network for better use
+package main;
+
 
 public interface Network{
     public Node addUser(Person person);
@@ -12,6 +13,6 @@ public interface Network{
     public void displayFollowers(Node user);
     public void displayFollowing(Node user);
     public void displayFriends(Node user);
-    public void removeUser(Node user);
+    public void removeUser(Node user) throws UserNotInNetworkException;
     public void updateUser(Node user, Person person);
 }

@@ -1,3 +1,5 @@
+package main;
+
 public class FollowDoesntExistException extends Exception {
 	public FollowDoesntExistException() {
 		super();
