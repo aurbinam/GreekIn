@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 
 public interface Network{
     public Node addUser(Person person);
@@ -7,6 +8,7 @@ public interface Network{
     public void removeFollow(Node follower, Node followed);
     public void printUserFollowing(Node user) throws UserNotInNetworkException;
     public void printUserFollowers(Node user) throws UserNotInNetworkException;
+    public ArrayList<String> recommendUsers(Node user1);
     public void printRecommendations(Node user1);
     public void printAllUsers();
     public void displayUser(Node user);

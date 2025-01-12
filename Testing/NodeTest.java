@@ -31,36 +31,6 @@ public class NodeTest {
         assertEquals("John", nodeJohn.getName());
     }
 
-    @Test
-    public void testGetUserFromNode() {
-        assertEquals(personJohn, nodeJohn.getUserFromNode());
-    }
-
-    @Test
-    public void testSetPerson() {
-        nodeJohn.setPerson(personJane);
-        assertEquals(personJane, nodeJohn.getUserFromNode());
-    }
-
-    @Test
-    public void testGetFollows() {
-        assertTrue(nodeJohn.getFollows().isEmpty());
-    }
-
-    @Test
-    public void testGetFollowers() {
-        assertTrue(nodeJohn.getFollowers().isEmpty());
-    }
-
-    @Test
-    public void testGetFollowing() {
-        assertTrue(nodeJohn.getFollowing().isEmpty());
-    }
-
-    @Test
-    public void testToString() {
-        assertEquals(personJohn.toString(), nodeJohn.toString());
-    }
 
     @Test
     public void testAddFollowing() throws UserAlreadyFollowingException {

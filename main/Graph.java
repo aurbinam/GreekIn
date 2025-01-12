@@ -234,6 +234,46 @@ public class Graph implements Network{
 		}
 	}
 
+    private static final void swapValues( int [ ] a, int index1, int index2 )
+	{
+		int tmp = a[ index1 ];
+		a[ index1 ] = a[ index2 ];
+		a[ index2 ] = tmp;
+	}
+
+	private static void quickSort( int [] theArray , int low , int high )
+	{
+		int pivot_index;
+		if ( low < high ) 
+		{
+			pivot_index = partition ( theArray , low , high );
+			quickSort( theArray , low , pivot_index - 1 );
+			quickSort( theArray , pivot_index + 1 , high );
+		}
+	}
+
+	private static int partition( int [] theArray , int low , int high )
+	{
+		int left = low;
+		int right = high;
+		int pivot = theArray[ low ];
+
+		while ( left < right )
+		{
+			while ( ( left < high ) && ( theArray[ left ] <= pivot ) )
+				left++;
+
+			while ( theArray[ right ] > pivot )
+				right--;
+
+			if ( left < right ) 
+				swapValues( theArray , left , right );
+		}
+
+		swapValues( theArray , low , right );
+		return right;
+	}
+
     public ArrayList<String> removeDuplicatesFromString(ArrayList<String> list){
         ArrayList<String> noDuplicates = new ArrayList<>();
         for(String s : list){
@@ -245,11 +285,11 @@ public class Graph implements Network{
     }
     
     //Sorts the scale and matches every number to the recommendation number given for the selected user
-    public ArrayList<String> recommendNode(Node user1){
+    public ArrayList<String> recommendUsers(Node user1){
         ArrayList<String> recommendations = new ArrayList<>();
         ArrayList<Node> canBeRecommended = canBeRecommended(user1);
         int[] scale = recommendedUsersToScale(user1, canBeRecommended);
-        reverseInsertionSort(scale, scale.length);
+        quickSort(scale, 0, scale.length-1);
         for(int i=0; i<scale.length;i++){
             for(int j=0; j<canBeRecommended.size();j++){
                 String userName = canBeRecommended.get(j).getName();
@@ -265,14 +305,14 @@ public class Graph implements Network{
     public void printRecommendations(Node user1){
         Scanner scan = new Scanner(System.in);
         System.out.println("\n" + user1.getName() + "'s recommended users are:");
-        ArrayList<String> recommendations = recommendNode(user1);
-        for(int i=0; i < 2;i++){
+        ArrayList<String> recommendations = recommendUsers(user1);
+        for(int i=0; i < 5;i++){
             System.out.println(recommendations.get(i));
         }
         System.out.println("Do you want to see more? (Y for yes)");
         char userInput = scan.next().charAt(0);
         if(userInput=='y' || userInput=='Y'){
-            for(int i=2;i < recommendations.size(); i++){
+            for(int i=5;i < 20; i++){
                 System.out.println(recommendations.get(i));
             }
         }

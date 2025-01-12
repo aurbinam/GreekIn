@@ -6,9 +6,6 @@ import main.*;
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 public class UsersTest {
     private Users users;
     private Node userNode1;

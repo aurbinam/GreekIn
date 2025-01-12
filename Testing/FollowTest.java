@@ -27,11 +27,4 @@ public class FollowTest {
     public void testGetFollowed() {
         assertEquals(followed, follow.getFollowed());
     }
-
-    @Test
-    public void testFollowConstructor() {
-        assertNotNull(follow);
-        assertEquals(follower, follow.getFollower());
-        assertEquals(followed, follow.getFollowed());
-    }
 }

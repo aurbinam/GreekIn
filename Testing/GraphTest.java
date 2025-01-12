@@ -99,7 +99,7 @@ public class GraphTest {
 
     @Test
     public void testRecommendNode() {
-        ArrayList<String> recommendations = graph.recommendNode(nodeJohn);
+        ArrayList<String> recommendations = graph.recommendUsers(nodeJohn);
         assertFalse(recommendations.isEmpty());
     }
 
