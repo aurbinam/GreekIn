@@ -32,8 +32,6 @@ public class GreekIn{
             greekIn.addFollow(userJill, userBrock);
             greekIn.addFollow(userJohn, userFreida);
             greekIn.addFollow(userJill, userFreida);
-            greekIn.addFollow(userJill, userFreida);
-            greekIn.addFollow(userJohn, userFreida);
             
         } catch(UserNotInNetworkException e){
             System.out.println(e.getMessage());

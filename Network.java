@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+//Interface for the network for better use
 
 public interface Network{
     public Node addUser(Person person);
@@ -6,17 +6,8 @@ public interface Network{
     public void removeFollow(Node follower, Node followed);
     public void printUserFollowing(Node user) throws UserNotInNetworkException;
     public void printUserFollowers(Node user) throws UserNotInNetworkException;
-    public boolean isFollowing(Node follower, Node followed);
-    public boolean areFriends(Node user1, Node user2);
-    public ArrayList<Node> getPotentialFollows(Node user);
-    public ArrayList<String> getMutuals(Node user1, Node user2);
-    public int calculateScale(Node user1, Node user2);
-    public ArrayList<String> recommendNode(Node user1);
     public void printRecommendations(Node user1);
-    public int compareMutuals(Node user1, Node user2);
     public void printAllUsers();
-
-
     public void displayUser(Node user);
     public void displayFollowers(Node user);
     public void displayFollowing(Node user);
